@@ -1,0 +1,93 @@
+﻿
+@{
+    ViewBag.Title = "Detail Pengisian Kuesioner - Tracer Study";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Assuming you have a shared layout
+}
+
+<h2 class="text-center">Daftar Detail Pengisian Kuesioner</h2>
+
+<div class="container">
+    <div style="overflow-x: auto; width: 100%;">
+        <table id="dataTable" style="width: 100%;" class="table table-hover table-bordered table-condensed text-center">
+            <thead>
+                <tr>
+                    <th class="align-middle text-center" width="1%">No.</th>
+                    <th class="align-middle text-center">Tahun Lulus</th>
+                    <th class="align-middle text-center">Tahun Kuesioner</th>
+                    <th class="align-middle text-center" width="1%">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#dataTable').DataTable({
+                "language": {
+                    "emptyTable": "Tidak ada Data Detail Pengisian Kuesioner",
+                    "zeroRecords": "Tidak ada Data Detail Pengisian Kuesioner"
+                },
+                "dom": 'Bfrti<"bottom-wrapper"p>',
+                scrollX: true,
+                "bLengthChange": false,
+                "bInfo": false,
+                "pageLength": 10,
+                "buttons": [
+                    {
+                        text: '<i class="fa fa-plus"></i> Tambah',
+                        className: 'btn btn-primary',
+                        action: function (e, dt, node, config) {
+                            window.location.href = '@Url.Action("Tambah", "DetailPengisianKuesioner")';
+                        },
+                        init: function (api, node, config) {
+                            $(node).removeClass('dt-button');
+                        },
+                    },
+                ]
+            });
+        });
+
+        $(".remove").click(function () {
+            var id = $(this).data('id');
+            console.log(id);
+
+            Swal.fire({
+                title: 'Apakah anda yakin menghapus Detail Pengisian Kuesioner dengan ID ' + id,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#5cb85c',
+                cancelButtonColor: '#d9534f',
+                confirmButtonText: 'Ya Hapus!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '@Url.Action("Hapus", "DetailPengisianKuesioner")' + '?id=' + id,
+                        method: "POST"
+                    });
+
+                    Swal.fire({
+                        title: 'Berhasil !',
+                        text: 'Detail Pengisian Kuesioner dengan ID ' + id + '. Berhasil Dihapus.',
+                        type: 'success',    
+                        icon: 'success'
+                    }).then(okay => {
+                        if (okay) {
+                            window.location.href = '@Url.Action("Index", "DetailPengisianKuesioner")'
+                        }
+                    });
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    Swal.fire({
+                        title: 'Batal !',
+                        text: 'Detail Pengisian Kuesioner dengan ID ' + id + '. Batal Dihapus.',
+                        type: 'error',
+                        icon: 'error'
+                    });
+                }
+            });
+        });
+    </script>
+}

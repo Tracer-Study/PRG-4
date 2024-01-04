@@ -183,7 +183,7 @@
                 <a asp-controller="Admin" asp-action="Index" class='list-group-item list-group-item-action @(ViewData["Title"] == "Dashboard Admin" ? "polman-menu-active" : "")' style='border-radius: 0px; border: none; padding-left: 22px; display: inherit;'>
                     <i class='fa fa-home fa-lg fa-pull-left'></i>Dashboard</a>
 
-                <a href='/Pages/Admin/Kode_Prodi.aspx' class='list-group-item list-group-item-action <%: Page.Title == "Kode Prodi" ? "polman-menu-active" : "" %>' style='border-radius: 0px; border: none; padding-left: 22px; display: inherit;'>
+                <a asp-controller="KodeProdi" asp-action="Index" class='list-group-item list-group-item-action <%: Page.Title == "Kode Prodi" ? "polman-menu-active" : "" %>' style='border-radius: 0px; border: none; padding-left: 22px; display: inherit;'>
                     <i class='fa fa-university fa-lg fa-pull-left'></i>Kode Prodi
                 </a>
 
@@ -191,10 +191,10 @@
                     <i class='fa fa-chevron-down fa-lg fa-pull-left'></i>Kuesioner
                 </a>
                 <div id='menu1' class='collapse <%: Page.Title == "Pertanyaan Kuesioner" ? "show" : Page.Title == "Jawaban Kuesioner" ? "show" : Page.Title == "Detail Jenis Periode" ? "show" : Page.Title == "Detail Pertanyaan Jawaban" ? "show" : Page.Title == "Daftar Urutan Data" ? "show" : Page.Title == "Detail Pengisian Kuesioner" ? "show" : "" %>' role='tabpanel'>
-                    <a href='/Pages/Admin/Detail_Jenis_Periode.aspx' class='list-group-item list-group-item-action <%: Page.Title == "Detail Jenis Periode" ? "polman-menu-active" : "" %>' style='border-radius: 0px; border: none; padding-left: 47px; display: inherit;'><i class='fa fa-calendar-check-o fa-lg fa-pull-left' style="margin-top: 2px;"></i>Detail Jenis Periode</a>
-                    <a href='/Pages/Admin/Detail_Pengisian_Kuesioner.aspx' class='list-group-item list-group-item-action <%: Page.Title == "Detail Pengisian Kuesioner" ? "polman-menu-active" : "" %>' style='border-radius: 0px; border: none; padding-left: 47px; display: inherit;'><i class='fa fa-users fa-lg fa-pull-left' style="margin-top: 2px;"></i>Pengisian Kuesioner</a>
-                    <a href='/Pages/Admin/Pertanyaan_Kuesioner.aspx' class='list-group-item list-group-item-action <%: Page.Title == "Pertanyaan Kuesioner" ? "polman-menu-active" : "" %>' style='border-radius: 0px; border: none; padding-left: 47px; display: inherit;'><i class='fa fa-question-circle fa-lg fa-pull-left' style="margin-top: 2px;"></i>Pertanyaan Kuesioner</a>
-                    <a href='/Pages/Admin/Jawaban_Kuesioner.aspx' class='list-group-item list-group-item-action <%: Page.Title == "Jawaban Kuesioner" ? "polman-menu-active" : "" %>' style='border-radius: 0px; border: none; padding-left: 47px; display: inherit;'><i class='fa fa-info-circle fa-lg fa-pull-left' style="margin-top: 2px;"></i>Jawaban Kuesioner</a>
+                    <a asp-controller="DetailJenisPeriode" asp-action="Index" class='list-group-item list-group-item-action <%: Page.Title == "Detail Jenis Periode" ? "polman-menu-active" : "" %>' style='border-radius: 0px; border: none; padding-left: 47px; display: inherit;'><i class='fa fa-calendar-check-o fa-lg fa-pull-left' style="margin-top: 2px;"></i>Detail Jenis Periode</a>
+                    <a asp-controller="PengisianKuesioner" asp-action="Index" class='list-group-item list-group-item-action <%: Page.Title == "Detail Pengisian Kuesioner" ? "polman-menu-active" : "" %>' style='border-radius: 0px; border: none; padding-left: 47px; display: inherit;'><i class='fa fa-users fa-lg fa-pull-left' style="margin-top: 2px;"></i>Pengisian Kuesioner</a>
+                    <a asp-controller="PertanyaanKuesioner" asp-action="Index" class='list-group-item list-group-item-action <%: Page.Title == "Pertanyaan Kuesioner" ? "polman-menu-active" : "" %>' style='border-radius: 0px; border: none; padding-left: 47px; display: inherit;'><i class='fa fa-question-circle fa-lg fa-pull-left' style="margin-top: 2px;"></i>Pertanyaan Kuesioner</a>
+                    <a asp-controller="JawabanKuesioner" asp-action="Index" class='list-group-item list-group-item-action <%: Page.Title == "Jawaban Kuesioner" ? "polman-menu-active" : "" %>' style='border-radius: 0px; border: none; padding-left: 47px; display: inherit;'><i class='fa fa-info-circle fa-lg fa-pull-left' style="margin-top: 2px;"></i>Jawaban Kuesioner</a>
                     <a href='/Pages/Admin/Detail_Pertanyaan_Jawaban.aspx' class='list-group-item list-group-item-action <%: Page.Title == "Detail Pertanyaan Jawaban" ? "polman-menu-active" : "" %>' style='border-radius: 0px; border: none; padding-left: 47px; display: inherit;'><i class='fa fa-plus-circle fa-lg fa-pull-left' style="margin-top: 2px;"></i>Pertanyaan Turunan</a>
                 </div>
 
@@ -221,5 +221,6 @@
 
         <div class="container" style="width: auto;">@RenderBody()</div>
     </div>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
