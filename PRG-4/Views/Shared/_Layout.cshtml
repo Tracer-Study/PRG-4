@@ -198,11 +198,11 @@
                     <a asp-controller="DetailPertanyaanJawaban" asp-action="Index" class='list-group-item list-group-item-action <%: Page.Title == "Detail Pertanyaan Jawaban" ? "polman-menu-active" : "" %>' style='border-radius: 0px; border: none; padding-left: 47px; display: inherit;'><i class='fa fa-plus-circle fa-lg fa-pull-left' style="margin-top: 2px;"></i>Pertanyaan Turunan</a>
                 </div>
 
-                <a href='/Pages/Admin/Laporan_Kuesioner_Excel.aspx' class='list-group-item list-group-item-action <%: Page.Title == "Laporan Kuesioner Excel" ? "polman-menu-active" : "" %>' style='border-radius: 0px; border: none; padding-left: 22px; display: inherit;'>
+                <a asp-controller="LaporanKuesionerExcel" asp-action="Index" class='list-group-item list-group-item-action <%: Page.Title == "Laporan Kuesioner Excel" ? "polman-menu-active" : "" %>' style='border-radius: 0px; border: none; padding-left: 22px; display: inherit;'>
                     <i class='fa fa-file-excel-o fa-lg fa-pull-left'></i>Laporan Kuesioner Excel
                 </a>
 
-                <a href='/Pages/Admin/Konfirmasi_Akun.aspx' class='list-group-item list-group-item-action <%: Page.Title == "Konfirmasi Akun" ? "polman-menu-active" : "" %>' style='border-radius: 0px; border: none; padding-left: 22px; display: inherit;'>
+                <a asp-controller="KonfirmasiAkun" asp-action="Index" class='list-group-item list-group-item-action <%: Page.Title == "Konfirmasi Akun" ? "polman-menu-active" : "" %>' style='border-radius: 0px; border: none; padding-left: 22px; display: inherit;'>
                     <i class='fa fa-check-circle fa-lg fa-pull-left'></i>Konfirmasi Akun
                 </a>
                 <a asp-controller="Login" asp-action="Index" class='list-group-item list-group-item-action' style='border-radius: 0px; border: none; padding-left: 22px; display: inherit;'>
