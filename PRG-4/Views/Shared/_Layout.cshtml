@@ -179,14 +179,13 @@
     <div class="polman-nav-static-right collapse scrollstyle" id="menu">
         <div id="accordions" role="tablist" aria-multiselectable="true">
             <div class="list-group">
-                <a href="/Logout.aspx" class="list-group-item list-group-item-action" style="border-radius: 0px; border: none; padding-left: 23px;"><i class="fa fa-sign-out fa-lg fa-pull-left"></i>Logout</a>
-                <a asp-controller="Admin" asp-action="Index" class='list-group-item list-group-item-action @(ViewData["Title"] == "Dashboard Admin" ? "polman-menu-active" : "")' style='border-radius: 0px; border: none; padding-left: 22px; display: inherit;'>
+                <a asp-controller="Logout" asp-action="Index" class='list-group-item list-group-item-action' style='border-radius: 0px; border: none; padding-left: 22px; display: inherit;'>
+                    <i class='fa fa-sign-in fa-lg fa-pull-left'></i>Logout
+                </a>                <a asp-controller="Admin" asp-action="Index" class='list-group-item list-group-item-action @(ViewData["Title"] == "Dashboard Admin" ? "polman-menu-active" : "")' style='border-radius: 0px; border: none; padding-left: 22px; display: inherit;'>
                     <i class='fa fa-home fa-lg fa-pull-left'></i>Dashboard</a>
-
                @*  <a asp-controller="KodeProdi" asp-action="Index" class='list-group-item list-group-item-action <%: Page.Title == "Kode Prodi" ? "polman-menu-active" : "" %>' style='border-radius: 0px; border: none; padding-left: 22px; display: inherit;'>
                     <i class='fa fa-university fa-lg fa-pull-left'></i>Kode Prodi
                 </a> *@
-
                 <a href='#menu1' role='tab' class='list-group-item list-group-item-action' data-toggle='collapse' data-parent='#accordion' aria-expanded='true' aria-controls='menu1' style='border-radius: 0px; border: none;'>
                     <i class='fa fa-chevron-down fa-lg fa-pull-left'></i>Kuesioner
                 </a>
@@ -199,16 +198,12 @@
                     <a asp-controller="DetailPertanyaanJawaban" asp-action="Index" class='list-group-item list-group-item-action <%: Page.Title == "Detail Pertanyaan Jawaban" ? "polman-menu-active" : "" %>' style='border-radius: 0px; border: none; padding-left: 47px; display: inherit;'><i class='fa fa-plus-circle fa-lg fa-pull-left' style="margin-top: 2px;"></i>Pertanyaan Turunan</a>
                  *@
              </div>
-
               @*   <a asp-controller="LaporanKuesionerExcel" asp-action="Index" class='list-group-item list-group-item-action <%: Page.Title == "Laporan Kuesioner Excel" ? "polman-menu-active" : "" %>' style='border-radius: 0px; border: none; padding-left: 22px; display: inherit;'>
                     <i class='fa fa-file-excel-o fa-lg fa-pull-left'></i>Laporan Kuesioner Excel
                 </a> *@
 
                 @* <a asp-controller="KonfirmasiAkun" asp-action="Index" class='list-group-item list-group-item-action <%: Page.Title == "Konfirmasi Akun" ? "polman-menu-active" : "" %>' style='border-radius: 0px; border: none; padding-left: 22px; display: inherit;'>
                     <i class='fa fa-check-circle fa-lg fa-pull-left'></i>Konfirmasi Akun
-                </a> *@
-               @*  <a asp-controller="Login" asp-action="Index" class='list-group-item list-group-item-action' style='border-radius: 0px; border: none; padding-left: 22px; display: inherit;'>
-                    <i class='fa fa-sign-in fa-lg fa-pull-left'></i>Login
                 </a> *@
             </div>
         </div>
