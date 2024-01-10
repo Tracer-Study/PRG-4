@@ -20,7 +20,7 @@ For more information on enabling MVC for empty projects, visit https://go.micros
                             <select class="form-control" id="myYearFilter" style="border-radius: 10px;">
                                 @for (int i = 0; i < 10; i++)
                                 {
-                                    <option>@(DateTime.Now.Year - i)</option>
+                                    <option value="@(DateTime.Now.Year - i)">@(DateTime.Now.Year - i)</option>
                                 }
                             </select>
                         </div>
@@ -221,28 +221,39 @@ For more information on enabling MVC for empty projects, visit https://go.micros
 <script type="text/javascript">
     $(document).ready(function () {
         dataAlumniByYears();
+        dataAlumniByProdi();
+
+        document.getElementById('myYearFilter').addEventListener('change', onYearFilterChange);
 
         const ctx = document.getElementById('myYearChartBar');
-        const ctxx = document.getElementById('myChartDoughnut');
-        const ctxxx = document.getElementById('myChartPie');
-        const ftx = document.getElementById('myYearFilter');
+        const ctxx = document.getElementById('myProdiChartBar');
+
+        const ctxxx = document.getElementById('myChartDoughnut');
+        const ctxxxx = document.getElementById('myChartPie');
+        
 
         var hasilChartBar;
         var hasilChartDoughnut;
         var hasilChartPie;
 
-        var labelsTahunLulus = [];
-        var dataTahunLulus = [];
-
+        
         var labelsStatus = [];
         var dataStatus = [];
 
         var labelsKuesioner = [];
         var dataKuesioner = [];
 
-        
+        var newChart;
+
+        function onYearFilterChange() {
+            dataAlumniByProdi();
+        }
 
         function dataAlumniByYears() {
+            var labelsTahunLulus = [];
+            var dataTahunLulus = [];
+
+
             var hostname = "https://localhost:44384/";
             var method = "GET";
             var url = hostname + "GetAllRegistrasiAlumniByYears";
@@ -253,9 +264,12 @@ For more information on enabling MVC for empty projects, visit https://go.micros
                 success: function (data) {
                     hasilChartBar = data.data;
 
-                    for (let i = 0; i < hasilChartBar.length; i++) {
-                        dataTahunLulus[i] = hasilChartBar[i].hitung;
-                        labelsTahunLulus[i] = hasilChartBar[i].tahun_lulus;
+                    var startIndex = Math.max(0, hasilChartBar.length - 5);
+                    var slicedData = hasilChartBar.slice(startIndex);
+
+                    for (let i = 0; i < slicedData.length; i++) {
+                        dataTahunLulus[i] = slicedData[i].count;
+                        labelsTahunLulus[i] = slicedData[i].value;
                     }
 
                     new Chart(ctx, {
@@ -276,6 +290,74 @@ For more information on enabling MVC for empty projects, visit https://go.micros
                             }
                         }
                     });
+                },
+                error: function (data) {
+                    console.log(data.responseText);
+                }
+            });
+        }
+        
+        function dataAlumniByProdi() {
+            var tahun = document.getElementById('myYearFilter').value;
+            var hasilChartProdi;
+            var labelsProdiLulus = [];
+            var dataProdiLulus = [];
+
+            var hostname = "https://localhost:44384/";
+            var method = "GET";
+            var url = hostname + "GetAllRegistrasiAlumniByProdi?year=" + tahun;
+
+            $.ajax({
+                url: url,
+                method: method,
+                contentType: "application/json",
+                success: function (data) {
+                    hasilChartProdi = data.data;
+                    labelsProdiLulus = ["MO","TKBG","MI","MK","TPM","P4","TRL","TRPAB"];
+
+                    console.log(hasilChartProdi)
+                    
+                    if (newChart) {
+                        for (let i = 0; i < hasilChartProdi.length; i++) {
+                            dataProdiLulus[i] = hasilChartProdi[i].count;
+                            labelsProdiLulus[i] = hasilChartProdi[i].valueName;
+                        }
+
+                        newChart.data.labels = labelsProdiLulus;
+                        newChart.data.datasets[0].data = dataProdiLulus;
+                        newChart.data.datasets[0].label= 'Data Alumni Berdasarkan Prodi Tahun ' + tahun;
+
+                        newChart.update();
+                    } else {
+
+                        for (let i = 0; i < hasilChartProdi.length; i++) {
+                            dataProdiLulus[i] = hasilChartProdi[i].count;
+                            labelsProdiLulus[i] = hasilChartProdi[i].valueName;
+                        }
+
+                        newChart = new Chart(ctxx, {
+                            type: 'bar',
+                            data: {
+                                labels: labelsProdiLulus,
+                                datasets: [{
+                                    label: 'Data Alumni Berdasarkan Prodi Tahun ' + tahun,
+                                        data: dataProdiLulus,
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    },
+                                    x: {
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        });
+                    
+                        }
                 },
                 error: function (data) {
                     console.log(data.responseText);
