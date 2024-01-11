@@ -1,0 +1,61 @@
+﻿
+@{
+    ViewBag.Title = "Laporan Kuesioner Excel - Tracer Study";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Adjust the layout path as needed
+}
+
+<div>
+    <h2>@ViewBag.titleManipulasiData</h2>
+</div>
+
+
+<div style="overflow-x: auto; width: 100%;">
+    <table id="dataTable" style="width: 100%;" class="table table-hover table-bordered table-condensed text-center">
+        <thead>
+            <tr>
+                <th class="align-middle text-center" width="1%">ID Periode</th>
+                <th class="align-middle text-center">Jenis Kuesioner</th>
+                <th class="align-middle text-center">Periode Kuesioner</th>
+                <th class="align-middle text-center" width="1%">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+            @* @foreach (var row in Model)
+            {
+                <tr style="height: 45px;">
+                    <td>@row.id_detail_periode</td>
+                    <td>@row.jenis_kuesioner</td>
+                    <td>@row.periode</td>
+                    <td>
+                        <a href='@Url.Action("LihatHasil", "LaporanKuesionerExcel", new { id = row.id_detail_periode })' rel="tooltip" data-placement="left"
+                           title="Lihat Hasil Kuesioner">
+                            <i class="fa fa-eye" aria-hidden="true"></i>
+                        </a> &nbsp;
+                        <a href='@Url.Action("LihatLaporan", "LaporanKuesionerExcel", new { id = row.id_detail_periode })' rel="tooltip" data-placement="left"
+                           title="Lihat Laporan Kuesioner">
+                            <i class="fa fa-table" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                </tr>
+            } *@
+        </tbody>
+    </table>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#dataTable').DataTable({
+                "language": {
+                    "emptyTable": "Tidak Ada Data Hasil Kuesioner Excel",
+                    "zeroRecords": "Tidak Ada Data Hasil Kuesioner Excel"
+                },
+                "dom": 'lfrti<"bottom-wrapper"p>',
+                scrollX: true,
+                "bLengthChange": false,
+                "bInfo": false,
+                "pageLength": 10
+            });
+        });
+    </script>
+}

@@ -1,0 +1,169 @@
+﻿
+@{
+    ViewBag.Title = "Konfirmasi Akun - Tracer Study";
+    Layout = "~/Views/Shared/_Layout.cshtml"; // Adjust the layout path as needed
+}
+
+<h2 class="text-center">Daftar Akun Tracer Study Alumni</h2>
+
+
+<div style="overflow-x: auto; width: 100%;">
+    <table id="dataTable" style="width: 100%;" class="table table-hover table-bordered table-condensed text-center">
+        <thead>
+            <tr>
+                <th class="align-middle text-center" width="1%">No.</th>
+                <th class="align-middle text-center">Nomor Induk Mahasiswa</th>
+                <th class="align-middle text-center">Nama Alumni</th>
+                <th class="align-middle text-center">Tahun Lulus</th>
+                <th class="align-middle text-center">Email Alumni</th>
+                <th class="align-middle text-center">Status Akun</th>
+                <th class="align-middle text-center" width="1%">Reset Password</th>
+                <th class="align-middle text-center" width="1%">Update Data</th>
+                <th class="align-middle text-center" width="1%">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+           @*  @foreach (var row in Model)
+            {
+                <tr style="height: 45px;">
+                    <td>@row.id</td>
+                    <td>@row.nim</td>
+                    <td>@row.nama</td>
+                    <td>@row.tahun_lulus</td>
+                    <td>@row.email</td>
+                    <td>@row.status</td>
+                    <td>
+                        <a href='@Url.Action("ResetPassword", "KonfirmasiAkun", new { idRP = row.id })' rel="tooltip" data-placement="left"
+                           title="Reset Password Alumni">
+                            <i class="fa fa-edit" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                    <td>
+                        <a href='@Url.Action("UpdateData", "KonfirmasiAkun", new { idUD = row.id })' rel="tooltip" data-placement="left"
+                           title="Update Data Alumni">
+                            <i class="fa fa-edit" aria-hidden="true"></i>
+                        </a>
+                    </td>
+                    <td>
+                        @if (row.status == "Belum Diverifikasi")
+                        {
+                            <a href='javascript:void(0)' rel="tooltip" data-placement="left" data-id="@row.id"
+                               title="Terima Akun Alumni" class="accept">
+                                <i class="fa fa-check" aria-hidden="true"></i>
+                            </a>
+                            &nbsp;
+                            <a rel="tooltip" data-placement="left"
+                               title="Tolak Akun Alumni"
+                               href="javascript:void(0)" class="reject"
+                               data-id="@row.id">
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                            </a>
+                        }
+                        else
+                        {
+                            <i class="fa fa-check" aria-hidden="true"></i>
+                            &nbsp;
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        }
+                    </td>
+                </tr>
+            } *@
+        </tbody>
+    </table>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#dataTable').DataTable({
+                "language": {
+                    "emptyTable": "Tidak ada Data Alumni",
+                    "zeroRecords": "Tidak ada Data Alumni"
+                },
+                "dom": 'lfrti<"bottom-wrapper"p>',
+                scrollX: true,
+                "bLengthChange": false,
+                "bInfo": false,
+                "pageLength": 10
+            });
+        });
+
+        $(".accept").click(function () {
+            var id = $(this).data('id');
+            console.log(id);
+
+            Swal.fire({
+                title: 'Apakah anda yakin terima akun dengan ID ' + id,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#5cb85c',
+                cancelButtonColor: '#d9534f',
+                confirmButtonText: 'Ya Terima!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '@Url.Action("TerimaAkun", "KonfirmasiAkun")?idTerima=' + id,
+                        method: "POST"
+                    });
+
+                    Swal.fire({
+                        title: 'Berhasil !',
+                        text: 'Akun dengan ID ' + id + '. Berhasil Diterima.',
+                        type: 'success',
+                        icon: 'success'
+                    }).then(okay => {
+                        if (okay) {
+                            window.location.href = '@Url.Action("Index", "KonfirmasiAkun")';
+                        }
+                    });
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    Swal.fire({
+                        title: 'Batal !',
+                        text: 'Akun dengan ID ' + id + '. Batal Diterima.',
+                        type: 'error',
+                        icon: 'error'
+                    });
+                }
+            });
+        });
+
+        $(".reject").click(function () {
+            var id = $(this).data('id');
+            console.log(id);
+
+            Swal.fire({
+                title: 'Apakah anda yakin tolak akun dengan ID ' + id,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#5cb85c',
+                cancelButtonColor: '#d9534f',
+                confirmButtonText: 'Ya Tolak!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '@Url.Action("TolakAkun", "KonfirmasiAkun")?idTolak=' + id,
+                        method: "POST"
+                    });
+
+                    Swal.fire({
+                        title: 'Berhasil !',
+                        text: 'Akun dengan ID ' + id + '. Berhasil Ditolak.',
+                        type: 'success',
+                        icon: 'success'
+                    }).then(okay => {
+                        if (okay) {
+                            window.location.href = '@Url.Action("Index", "KonfirmasiAkun")';
+                        }
+                    });
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    Swal.fire({
+                        title: 'Batal !',
+                        text: 'Akun dengan ID ' + id + '. Batal Ditolak.',
+                        type: 'error',
+                        icon: 'error'
+                    });
+                }
+            });
+        });
+    </script>
+}
