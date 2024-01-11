@@ -156,7 +156,7 @@
                 ).then(function () {
                     window.location = '/study-tracer/Pages/Admin/Dashboard.aspx';
                 });
-            }
+            }   
 
             function berhasilAlumni() {
                 Swal.fire(
@@ -230,7 +230,7 @@
             var ContentPlaceHolder1_reqTxtPassword = document.all ? document.all["ContentPlaceHolder1_reqTxtPassword"] : document.getElementById("ContentPlaceHolder1_reqTxtPassword");
             ContentPlaceHolder1_reqTxtPassword.controltovalidate = "ContentPlaceHolder1_txtPassword";
             ContentPlaceHolder1_reqTxtPassword.display = "Dynamic";
-            ContentPlaceHolder1_reqTxtPassword.validationGroup = "valKirim";
+            ContentPlaceHolder1_reqTxtPassword.validationGroup = "valkirim";
             ContentPlaceHolder1_reqTxtPassword.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
             ContentPlaceHolder1_reqTxtPassword.initialvalue = "";
             //]]>
@@ -242,7 +242,7 @@
 
             var Page_ValidationActive = false;
             if (typeof (ValidatorOnLoad) == "function") {
-                ValidatorOnLoad();
+                ValidatorOnLoad();s
             }
 
             function ValidatorOnSubmit() {

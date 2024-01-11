@@ -58,7 +58,7 @@
             $('#dataTable').DataTable({
                 "language": {
                     "emptyTable": "Tidak ada Data Pertanyaan Kuesioner",
-                    "zeroRecords": "Tidak ada Data Pertanyaan Kuesioner"
+                    "zeroRecords": "Tidak ada Data Pertanyaan kuesioner"
                 },
                 "dom": 'Bfrti<"bottom-wrapper"p>',
                 scrollX: true,
@@ -84,7 +84,7 @@
             var id = $(this).data('id');
             console.log(id);
             Swal.fire({
-                title: 'Apakah anda yakin menghapus Pertanyaan Kuesioner dengan ID ' + id,
+                title: 'Apakah anda ingin menghapus Pertanyaan Kuesioner dengan ID ' + id,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#5cb85c',
