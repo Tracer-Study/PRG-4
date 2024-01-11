@@ -222,6 +222,7 @@ For more information on enabling MVC for empty projects, visit https://go.micros
     $(document).ready(function () {
         dataAlumniByYears();
         dataAlumniByProdi();
+        dataAlumniByStatus();
 
         document.getElementById('myYearFilter').addEventListener('change', onYearFilterChange);
 
@@ -314,13 +315,14 @@ For more information on enabling MVC for empty projects, visit https://go.micros
                 success: function (data) {
                     hasilChartProdi = data.data;
                     labelsProdiLulus = ["MO","TKBG","MI","MK","TPM","P4","TRL","TRPAB"];
+                    var startIndex = Math.max(0);
 
                     console.log(hasilChartProdi)
                     
                     if (newChart) {
                         for (let i = 0; i < hasilChartProdi.length; i++) {
                             dataProdiLulus[i] = hasilChartProdi[i].count;
-                            labelsProdiLulus[i] = hasilChartProdi[i].valueName;
+                            //labelsProdiLulus[i] = hasilChartProdi[i].valueName;
                         }
 
                         newChart.data.labels = labelsProdiLulus;
@@ -332,7 +334,7 @@ For more information on enabling MVC for empty projects, visit https://go.micros
 
                         for (let i = 0; i < hasilChartProdi.length; i++) {
                             dataProdiLulus[i] = hasilChartProdi[i].count;
-                            labelsProdiLulus[i] = hasilChartProdi[i].valueName;
+                            //labelsProdiLulus[i] = hasilChartProdi[i].valueName;
                         }
 
                         newChart = new Chart(ctxx, {
@@ -348,7 +350,10 @@ For more information on enabling MVC for empty projects, visit https://go.micros
                             options: {
                                 scales: {
                                     y: {
-                                        beginAtZero: true
+                                        beginAtZero: true,
+                                        ticks: {
+                                    stepSize: 1 // Menambahkan opsi untuk menetapkan langkah pada sumbu y
+                                }
                                     },
                                     x: {
                                         beginAtZero: true
@@ -358,6 +363,37 @@ For more information on enabling MVC for empty projects, visit https://go.micros
                         });
                     
                         }
+                },
+                error: function (data) {
+                    console.log(data.responseText);
+                }
+            });
+        }
+
+        function dataAlumniByStatus() {
+            var notVerified = document.getElementById('dataDJP');
+            var dataByStatus;
+            var jumlahBelumVerifikasi;
+
+            var hostname = "https://localhost:44384/";
+            var method = "GET";
+            var url = hostname + "GetAllRegistrasiAlumniByStatus";
+            $.ajax({
+                url: url,
+                method: method,
+                contentType: "application/json",
+                success: function (data) {
+                    dataByStatus = data.data;
+
+                    for (let i = 0; i < dataByStatus.length; i++) {
+                        if (dataByStatus[i].value === "Belum Diverifikasi") {
+                            jumlahBelumVerifikasi = dataByStatus[i].count;
+                        }
+                    }
+                    console.log(jumlahBelumVerifikasi);
+
+                    notVerified.value = jumlahBelumVerifikasi;
+                    notVerified.innerText = jumlahBelumVerifikasi;
                 },
                 error: function (data) {
                     console.log(data.responseText);
