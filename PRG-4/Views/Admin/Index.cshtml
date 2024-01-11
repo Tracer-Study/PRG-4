@@ -1,0 +1,578 @@
+﻿@*
+For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Dashboard Admin";
+    var cultureInfo = new System.Globalization.CultureInfo("id-ID");
+    var formattedDate = DateTime.Now.ToString("dddd, d MMMM yyyy", cultureInfo);
+}
+
+<div class="row">
+    <div class="card w-100" style="border-radius: 10px;">
+        <div class="card-header">
+            Dashboard - @formattedDate
+        </div>
+        <div class="card-body mb-4 mx-3 p-3">
+            <div class="row">
+                <div class="col-md-2 col-sm-12" >
+                    <div class="row">
+                        <div class="col">
+                            <select class="form-control" id="myYearFilter" style="border-radius: 10px;">
+                                @for (int i = 0; i < 10; i++)
+                                {
+                                    <option value="@(DateTime.Now.Year - i)">@(DateTime.Now.Year - i)</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-5 col-sm-12" >
+                    <div class="card card-stats mb-4 p-3" style="border-radius: 10px;">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <center>
+                                        <span style="font-size: Larger; font-weight: bold;">Sudah Mengisi Kuesioner</span><br>
+                                    </center>
+                                    <span class="h2 font-weight-bold mb-0 num" runat="server" id="dataJK" data-val="0">0</span>
+                                </div>
+                            </div>
+
+                            <p class="mt-3 mb-0 text-muted text-sm">
+                                <a href='/Pages/Admin/Jawaban_Kuesioner.aspx' data-toggle="tooltip" data-placement="bottom" data-original-title="Lihat Detail Koresponden">
+                                    <span class="mr-2">
+                                        <i class="fa fa-arrow-circle-right"></i> Detail Koresponden
+                                    </span>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-5 col-sm-12" >
+                    <div class="card card-stats mb-4 p-3" style="border-radius: 10px;">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <center>
+                                        <span style="font-size: Larger; font-weight: bold;">Akun Yang Belum Diverifikasi</span><br>
+                                    </center>
+                                    <span class="h2 font-weight-bold mb-0 num" runat="server" id="dataDJP" data-val="0">0</span>
+                                </div>
+                            </div>
+
+                            <p class="mt-3 mb-0 text-muted text-sm">
+                                <a href='/Pages/Admin/Detail_Jenis_Periode.aspx' data-toggle="tooltip" data-placement="bottom" data-original-title="Lihat Detail Akun yang Belum Diverifikasi">
+                                    <span class="mr-2">
+                                        <i class="fa fa-arrow-circle-right"></i> Detail Akun
+                                    </span>
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6 col-md-12 mb-4 justify-content-center" >
+                    <div class="card card-stats mb-4 p-3" style="border-radius: 10px;">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <center>
+                                        <span style="font-size: Larger; font-weight: bold;">Data Alumni Berdasarkan Tahun</span><br>
+                                        <br>
+                                    </center>
+                                </div>
+                            </div>
+
+                            <canvas id="myYearChartBar" style="display: block; box-sizing: border-box; height: 394px; width: 789px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-12 mb-4 justify-content-center">
+                    <div class="card card-stats mb-4 p-3" style="border-radius: 10px;">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <center>
+                                        <span style="font-size: Larger; font-weight: bold;">Data Alumni Berdasarkan Prodi</span><br>
+                                        <br>
+                                    </center>
+                                </div>
+                            </div>
+
+                            <canvas id="myProdiChartBar" style="display: block; box-sizing: border-box; height: 394px; width: 789px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-12 mb-4 justify-content-center">
+                    <div class="card card-stats mb-4 p-3" style="border-radius: 10px;">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <center>
+                                        <span style="font-size: Larger; font-weight: bold;">Persentase Koresponden</span><br>
+                                        <br>
+                                    </center>
+                                </div>
+                            </div>
+
+                            <canvas id="myChartDoughnut" style="display: block; box-sizing: border-box; height: 300px; width: 789px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6 col-md-12 mb-4 justify-content-center" >
+                    <div class="card card-stats mb-4 p-3" style="border-radius: 10px;">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col">
+                                    <center>
+                                        <span style="font-size: Larger; font-weight: bold;">Detail Koresponden</span><br>
+                                        <br>
+                                    </center>
+                                </div>
+                            </div>
+                            <div style="overflow-x: auto; width: 100%; display: block; box-sizing: border-box; height: 300px;">
+                                <table class="table table-hover table-bordered table-condensed table-striped grid scrollstyle">
+                                    <thead>
+                                        <tr>
+                                            <th>P4</th>
+                                            <th>TPM</th>
+                                            <th>TO</th>
+                                            <th>MI</th>
+                                            <th>MK</th>
+                                            <th>TKBG</th>
+                                            <th>TRPAB</th>
+                                            <th>TRL</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @* @foreach (var item in Model)
+                                        {
+                                            <tr>
+                                                <td>
+                                                    @if (item.Status == "Belum Diverifikasi")
+                                                    {
+                                                        <div>
+                                                            <a rel="tooltip" data-placement="left" title="Terima Akun Alumni" href="#" data-id="@item.Id" data-nim="@item.Nim" class="accept">
+                                                                <i class="fa fa-check" aria-hidden="true"></i>
+                                                            </a>
+                                                            &nbsp;
+                                                            <a rel="tooltip" data-placement="left" title="Tolak Akun Alumni" href="#" data-id="@item.Id" data-nim="@item.Nim" class="reject">
+                                                                <i class="fa fa-times" aria-hidden="true"></i>
+                                                            </a>
+                                                        </div>
+                                                    }
+                                                    <label asp-if="item.Status == 'Diterima'">Alumni Diterima</label>
+                                                    <label asp-if="item.Status == 'Ditolak'">Alumni Ditolak</label>
+                                                </td>
+                                                <td>@item.Nim</td>
+                                                <td>@item.Nama</td>
+                                                <td>@item.TahunLulus</td>
+                                            </tr>
+                                        } *@
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @* <div class="col-lg-6 col-md-12 mb-4 justify-content-center" >
+                    <center>
+                        <span style="font-size: Larger; font-weight: bold;">Data Alumni Besertakan Status</span><br>
+                        <br>
+                    </center>
+
+                    <center>
+                        <canvas id="myChartDoughnut"></canvas>
+                    </center>
+                </div>
+
+                <div class="col-lg-6 col-md-12 mb-4 justify-content-center" >
+                    <center>
+                        <span style="font-size: Larger; font-weight: bold;">Data Kuesioner Terisi Berdasarkan Jenis Kuesioner</span><br>
+                        <br>
+                    </center>
+
+                    <% if (Int32.Parse(Session["countHK"].ToString()) == 0) { %>
+	                    <center>
+		                    <p>Data Hasil Kuesioner Tidak Ada</p>
+	                    </center>
+                    <% } else { %>
+	                    <center>
+                            <canvas id="myChartPie"></canvas>
+	                    </center>
+                    <% } %>
+                </div> *@
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        dataAlumniByYears();
+        dataAlumniByProdi();
+
+        document.getElementById('myYearFilter').addEventListener('change', onYearFilterChange);
+
+        const ctx = document.getElementById('myYearChartBar');
+        const ctxx = document.getElementById('myProdiChartBar');
+
+        const ctxxx = document.getElementById('myChartDoughnut');
+        const ctxxxx = document.getElementById('myChartPie');
+        
+
+        var hasilChartBar;
+        var hasilChartDoughnut;
+        var hasilChartPie;
+
+        
+        var labelsStatus = [];
+        var dataStatus = [];
+
+        var labelsKuesioner = [];
+        var dataKuesioner = [];
+
+        var newChart;
+
+        function onYearFilterChange() {
+            dataAlumniByProdi();
+        }
+
+        function dataAlumniByYears() {
+            var labelsTahunLulus = [];
+            var dataTahunLulus = [];
+
+
+            var hostname = "https://localhost:44384/";
+            var method = "GET";
+            var url = hostname + "GetAllRegistrasiAlumniByYears";
+            $.ajax({
+                url: url,
+                method: method,
+                contentType: "application/json",
+                success: function (data) {
+                    hasilChartBar = data.data;
+
+                    var startIndex = Math.max(0, hasilChartBar.length - 5);
+                    var slicedData = hasilChartBar.slice(startIndex);
+
+                    for (let i = 0; i < slicedData.length; i++) {
+                        dataTahunLulus[i] = slicedData[i].count;
+                        labelsTahunLulus[i] = slicedData[i].value;
+                    }
+
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: labelsTahunLulus,
+                            datasets: [{
+                                label: 'Data Alumni Berdasarkan Tahun',
+                                data: dataTahunLulus,
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                },
+                error: function (data) {
+                    console.log(data.responseText);
+                }
+            });
+        }
+        
+        function dataAlumniByProdi() {
+            var tahun = document.getElementById('myYearFilter').value;
+            var hasilChartProdi;
+            var labelsProdiLulus = [];
+            var dataProdiLulus = [];
+
+            var hostname = "https://localhost:44384/";
+            var method = "GET";
+            var url = hostname + "GetAllRegistrasiAlumniByProdi?year=" + tahun;
+
+            $.ajax({
+                url: url,
+                method: method,
+                contentType: "application/json",
+                success: function (data) {
+                    hasilChartProdi = data.data;
+                    labelsProdiLulus = ["MO","TKBG","MI","MK","TPM","P4","TRL","TRPAB"];
+
+                    console.log(hasilChartProdi)
+                    
+                    if (newChart) {
+                        for (let i = 0; i < hasilChartProdi.length; i++) {
+                            dataProdiLulus[i] = hasilChartProdi[i].count;
+                            labelsProdiLulus[i] = hasilChartProdi[i].valueName;
+                        }
+
+                        newChart.data.labels = labelsProdiLulus;
+                        newChart.data.datasets[0].data = dataProdiLulus;
+                        newChart.data.datasets[0].label= 'Data Alumni Berdasarkan Prodi Tahun ' + tahun;
+
+                        newChart.update();
+                    } else {
+
+                        for (let i = 0; i < hasilChartProdi.length; i++) {
+                            dataProdiLulus[i] = hasilChartProdi[i].count;
+                            labelsProdiLulus[i] = hasilChartProdi[i].valueName;
+                        }
+
+                        newChart = new Chart(ctxx, {
+                            type: 'bar',
+                            data: {
+                                labels: labelsProdiLulus,
+                                datasets: [{
+                                    label: 'Data Alumni Berdasarkan Prodi Tahun ' + tahun,
+                                        data: dataProdiLulus,
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    },
+                                    x: {
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        });
+                    
+                        }
+                },
+                error: function (data) {
+                    console.log(data.responseText);
+                }
+            });
+        }
+@*
+        $.ajax({
+            type: "POST",
+            url: "/Pages/Admin/Dashboard.aspx/GetReturnAlumniBerdasarkanTahun",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                hasilChartBar = JSON.parse('' + result.d + '');
+                console.log(hasilChartBar.length);
+
+                for (let i = 0; i < hasilChartBar.length; i++) {
+                    dataTahunLulus[i] = hasilChartBar[i].hitung;
+                    labelsTahunLulus[i] = hasilChartBar[i].tahun_lulus;
+                }
+
+                console.log(dataTahunLulus);
+                console.log(labelsTahunLulus);
+
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labelsTahunLulus,
+                        datasets: [{
+                            label: 'Data Alumni Berdasarkan Tahun',
+                            data: dataTahunLulus,
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+            }, error: function (data) {
+                console.log(data.responseText);
+            }
+        });
+
+     $.ajax({
+            type: "POST",
+            url: "/Pages/Admin/Dashboard.aspx/GetReturnAlumniBerdasarkanStatus",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                hasilChartDoughnut = JSON.parse('' + result.d + '');
+                console.log(hasilChartDoughnut.length);
+
+                for (let i = 0; i < hasilChartDoughnut.length; i++) {
+                    dataStatus[i] = hasilChartDoughnut[i].hitung;
+                    labelsStatus[i] = hasilChartDoughnut[i].status;
+                }
+
+                console.log(dataStatus);
+                console.log(labelsStatus);
+
+                new Chart(ctxx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: labelsStatus,
+                        datasets: [{
+                            label: 'Jumlah Alumni',
+                            data: dataStatus,
+                            backgroundColor: [
+                                'rgb(255, 99, 132)',
+                                'rgb(54, 162, 235)',
+                                'rgb(255, 205, 86)'
+                            ],
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        width: 700,
+                    },
+                });
+            }, error: function (data) {
+                console.log(data.responseText);
+            }
+        });
+
+        $.ajax({
+            type: "POST",
+            url: "/Pages/Admin/Dashboard.aspx/GetReturnHasilKuesionerBerdasarkanJenisKuesioner",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            success: function (result) {
+                hasilChartPie = JSON.parse('' + result.d + '');
+                console.log(hasilChartPie.length);
+
+                for (let i = 0; i < hasilChartPie.length; i++) {
+                    dataKuesioner[i] = hasilChartPie[i].hitung;
+                    labelsKuesioner[i] = hasilChartPie[i].jenis_kuesioner;
+                }
+
+                console.log(dataKuesioner);
+                console.log(labelsKuesioner);
+
+                new Chart(ctxxx, {
+                    type: 'pie',
+                    data: {
+                        labels: labelsKuesioner,
+                        datasets: [{
+                            label: 'Jumlah Kuesioner',
+                            data: dataKuesioner,
+                            backgroundColor: [
+                                'rgb(255, 99, 132)',
+                                'rgb(54, 162, 235)',
+                                'rgb(255, 205, 86)'
+                            ],
+                            hoverOffset: 4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        width: 700,
+                    },
+                });
+            }, error: function (data) {
+                console.log(data.responseText);
+            }
+        });
+    });
+</script>
+
+<script type="text/javascript">
+    $(".accept").click(function () {
+        var id = $(this).data('id');
+        console.log(id);
+
+        Swal.fire({
+            title: 'Apakah anda yakin terima akun dengan ID ' + id,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#5cb85c',
+            cancelButtonColor: '#d9534f',
+            confirmButtonText: 'Ya Terima!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '/Pages/Admin/Konfirmasi_Akun_Update.aspx?idTerima=' + id,
+                    method: "POST"
+                });
+
+                Swal.fire({
+                    title: 'Berhasil !',
+                    text: 'Akun dengan ID ' + id + '. Berhasil Diterima.',
+                    type: 'success',
+                    icon: 'success'
+                }).then(okay => {
+                    if (okay) {
+                        window.location.href = "/Pages/Admin/Dashboard.aspx"
+                    }
+                });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                Swal.fire({
+                    title: 'Batal !',
+                    text: 'Akun dengan ID ' + id + '. Batal Diterima.',
+                    type: 'error',
+                    icon: 'error'
+                });
+            }
+        });
+        *@
+    });
+</script>
+     @* 
+<script type="text/javascript">
+    $(".reject").click(function () {
+        var id = $(this).data('id');
+        console.log(id);
+
+        Swal.fire({
+            title: 'Apakah anda yakin tolak akun dengan ID ' + id,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#5cb85c',
+            cancelButtonColor: '#d9534f',
+            confirmButtonText: 'Ya Tolak!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '/Pages/Admin/Konfirmasi_Akun_Update.aspx?idTolak=' + id,
+                    method: "POST"
+                });
+
+                Swal.fire({
+                    title: 'Berhasil !',
+                    text: 'Akun dengan ID ' + id + '. Berhasil Ditolak.',
+                    type: 'success',
+                    icon: 'success'
+                }).then(okay => {
+                    if (okay) {
+                        window.location.href = "/Pages/Admin/Dashboard.aspx"
+                    }
+                });
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                Swal.fire({
+                    title: 'Batal !',
+                    text: 'Akun dengan ID ' + id + '. Batal Ditolak.',
+                    type: 'error',
+                    icon: 'error'
+                });
+            }
+        });
+    });
+</script>
+ *@
