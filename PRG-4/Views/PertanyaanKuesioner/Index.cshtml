@@ -1,11 +1,12 @@
-﻿
+
 @{
-    ViewBag.Title = "Pertanyaan Kuesioner - Tracer Study";
+    ViewBag.Title = "Pertanyaan Kuesioner";
 }
 
 <div>
     <h2 class="text-center">Daftar Pertanyaan Kuesioner</h2>
 </div>
+
 
 <div style="overflow-x: auto; width: 100%;">
     <table id="dataTable" style="width: 100%;" class="table table-hover table-bordered table-condensed text-center">
@@ -21,7 +22,7 @@
             </tr>
         </thead>
         <tbody>
-            @* @foreach (var row in Model)
+            @* @foreach (var row in Model)s
             {
                 <tr style="height: 45px;">
                     <td>@row.Id</td>
@@ -83,7 +84,6 @@
         $(".remove").click(function () {
             var id = $(this).data('id');
             console.log(id);
-
             Swal.fire({
                 title: 'Apakah anda yakin menghapus Pertanyaan Kuesioner dengan ID ' + id,
                 icon: 'warning',
@@ -97,7 +97,6 @@
                         url: '@Url.Action("Hapus", "Pertanyaan_Kuesioner")?id=' + id,
                         method: "POST"
                     });
-
                     Swal.fire({
                         title: 'Berhasil !',
                         text: 'Pertanyaan Kuesioner dengan ID ' + id + '. Berhasil Dihapus.',
