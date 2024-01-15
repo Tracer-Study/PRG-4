@@ -223,6 +223,7 @@ For more information on enabling MVC for empty projects, visit https://go.micros
         dataAlumniByYears();
         dataAlumniByProdi();
         dataAlumniByStatus();
+        dataIsiKuesioner();
 
         document.getElementById('myYearFilter').addEventListener('change', onYearFilterChange);
 
@@ -246,10 +247,12 @@ For more information on enabling MVC for empty projects, visit https://go.micros
 
         var newChartYear;
         var newChartProdi;
+        var newChartIsi;
 
         function onYearFilterChange() {
             dataAlumniByYears();
             dataAlumniByProdi();
+            dataIsiKuesioner();
         }
 
         function dataAlumniByYears() {
@@ -416,13 +419,17 @@ For more information on enabling MVC for empty projects, visit https://go.micros
         }
 
         function dataIsiKuesioner() {
-            var notVerified = document.getElementById('dataDJP');
-            var dataByStatus;
+            var tahun = document.getElementById('myYearFilter').value;
+            var dataBelum = document.getElementById('dataJK');
+
+            var labelsKuesioner = ["Belum Mengisi Kusesioner","Sudah Mengisi Kusesioner"];
+            var dataKuesioner = [];
+
             var jumlahBelumVerifikasi;
 
             var hostname = "https://localhost:44384/";
             var method = "GET";
-            var url = hostname + "GetAllRegistrasiAlumniByStatus";
+            var url = hostname + "GetJumlahIsiKuesioner?year=" + tahun;
             $.ajax({
                 url: url,
                 method: method,
@@ -430,47 +437,51 @@ For more information on enabling MVC for empty projects, visit https://go.micros
                 success: function (data) {
                     dataIsi = data.data;
 
-                    for (let i = 0; i < dataByStatus.length; i++) {
-                        if (dataByStatus[i].value === "Belum Diverifikasi") {
-                            jumlahBelumVerifik asi = dataByStatus[i].count;
-                        }
+                    console.log(dataIsi);
+
+                    var sudah = dataIsi[0].sudah_isi;
+                    var belum = dataIsi[0].belum_isi;
+
+                    dataBelum.value = sudah;
+                    dataBelum.innerText = sudah;
+
+
+                    if (newChartIsi) {
+                        dataKuesioner[0] = belum;
+                        dataKuesioner[1] = sudah;
+                        
+
+                        newChartIsi.data.labels = labelsKuesioner;
+                        newChartIsi.data.datasets[0].data = dataKuesioner;
+                        newChartIsi.data.datasets[0].label= 'Jumlah Isi Kuesioner Tahun ' + tahun;
+
+                        newChartIsi.update();
+                    } else {
+                    
+                        dataKuesioner[0] = belum;
+                        dataKuesioner[1] = sudah;
+
+                        newChartIsi = new Chart(ctxxx, {
+                            type: 'pie',
+                            data: {
+                                labels: labelsKuesioner,
+                                datasets: [{
+                                    label: 'Jumlah Isi Kuesioner Tahun ' + tahun,
+                                    data: dataKuesioner,
+                                    backgroundColor: [
+                                        'rgb(255, 99, 132)',
+                                        'rgb(54, 162, 235)',
+                                        'rgb(255, 205, 86)'
+                                    ],
+                                    hoverOffset: 4
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+
+                            },
+                        });
                     }
-                    console.log(jumlahBelumVerifikasi);
-
-                    notVerified.value = jumlahBelumVerifikasi;
-                    notVerified.innerText = jumlahBelumVerifikasi;
-
-//                    ----- Data Web Form -----
-
-                    for (let i = 0; i < dataIsi.length; i++) {
-                        dataKuesioner[i] = dataIsi[i].hitung;
-                            labelsKuesioner[i] = dataIsi[i].jenis_kuesioner;
-                    }
-
-                    console.log(dataKuesioner);
-                    console.log(labelsKuesioner);
-
-                    new Chart(ctxxx, {
-                        type: 'pie',
-                        data: {
-                            labels: labelsKuesioner,
-                            datasets: [{
-                                label: 'Jumlah Kuesioner',
-                                data: dataKuesioner,
-                                backgroundColor: [
-                                    'rgb(255, 99, 132)',
-                                    'rgb(54, 162, 235)',
-                                    'rgb(255, 205, 86)'
-                                ],
-                                hoverOffset: 4
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            width: 700,
-                        },
-                    });
                 },
                 error: function (data) {
                     console.log(data.responseText);
