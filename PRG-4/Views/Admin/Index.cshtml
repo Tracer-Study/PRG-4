@@ -244,20 +244,23 @@ For more information on enabling MVC for empty projects, visit https://go.micros
         var labelsKuesioner = [];
         var dataKuesioner = [];
 
-        var newChart;
+        var newChartYear;
+        var newChartProdi;
 
         function onYearFilterChange() {
+            dataAlumniByYears();
             dataAlumniByProdi();
         }
 
         function dataAlumniByYears() {
+            var year = document.getElementById('myYearFilter').value;
             var labelsTahunLulus = [];
             var dataTahunLulus = [];
 
 
             var hostname = "https://localhost:44384/";
             var method = "GET";
-            var url = hostname + "GetAllRegistrasiAlumniByYears";
+            var url = hostname + "GetAllRegistrasiAlumniByYears?year=" + year;
             $.ajax({
                 url: url,
                 method: method,
@@ -267,30 +270,41 @@ For more information on enabling MVC for empty projects, visit https://go.micros
 
                     var startIndex = Math.max(0, hasilChartBar.length - 5);
                     var slicedData = hasilChartBar.slice(startIndex);
+                    if (newChartYear) {
+                        for (let i = 0; i < slicedData.length; i++) {
+                            dataTahunLulus[i] = slicedData[i].count;
+                            labelsTahunLulus[i] = slicedData[i].value;
+                        }
+                        newChartYear.data.labels = labelsTahunLulus;
+                        newChartYear.data.datasets[0].data = dataTahunLulus;
+                        newChartYear.data.datasets[0].label= 'Data Alumni Berdasarkan Tahun';
 
-                    for (let i = 0; i < slicedData.length; i++) {
-                        dataTahunLulus[i] = slicedData[i].count;
-                        labelsTahunLulus[i] = slicedData[i].value;
-                    }
+                        newChartYear.update();
+                    } else {
+                        for (let i = 0; i < slicedData.length; i++) {
+                            dataTahunLulus[i] = slicedData[i].count;
+                            labelsTahunLulus[i] = slicedData[i].value;
+                        }
 
-                    new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: labelsTahunLulus,
-                            datasets: [{
-                                label: 'Data Alumni Berdasarkan Tahun',
-                                data: dataTahunLulus,
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            scales: {
-                                y: {
-                                    beginAtZero: true
+                        newChartYear = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: labelsTahunLulus,
+                                datasets: [{
+                                    label: 'Data Alumni Berdasarkan Tahun',
+                                    data: dataTahunLulus,
+                                    borderWidth: 1
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    y: {
+                                        beginAtZero: true
+                                    }
                                 }
                             }
-                        }
-                    });
+                        });
+                    }
                 },
                 error: function (data) {
                     console.log(data.responseText);
@@ -319,17 +333,17 @@ For more information on enabling MVC for empty projects, visit https://go.micros
 
                     console.log(hasilChartProdi)
                     
-                    if (newChart) {
+                    if (newChartProdi) {
                         for (let i = 0; i < hasilChartProdi.length; i++) {
                             dataProdiLulus[i] = hasilChartProdi[i].count;
                             //labelsProdiLulus[i] = hasilChartProdi[i].valueName;
                         }
 
-                        newChart.data.labels = labelsProdiLulus;
-                        newChart.data.datasets[0].data = dataProdiLulus;
-                        newChart.data.datasets[0].label= 'Data Alumni Berdasarkan Prodi Tahun ' + tahun;
+                        newChartProdi.data.labels = labelsProdiLulus;
+                        newChartProdi.data.datasets[0].data = dataProdiLulus;
+                        newChartProdi.data.datasets[0].label= 'Data Alumni Berdasarkan Prodi Tahun ' + tahun;
 
-                        newChart.update();
+                        newChartProdi.update();
                     } else {
 
                         for (let i = 0; i < hasilChartProdi.length; i++) {
@@ -337,7 +351,7 @@ For more information on enabling MVC for empty projects, visit https://go.micros
                             //labelsProdiLulus[i] = hasilChartProdi[i].valueName;
                         }
 
-                        newChart = new Chart(ctxx, {
+                        newChartProdi = new Chart(ctxx, {
                             type: 'bar',
                             data: {
                                 labels: labelsProdiLulus,
@@ -362,7 +376,7 @@ For more information on enabling MVC for empty projects, visit https://go.micros
                             }
                         });
                     
-                        }
+                    }
                 },
                 error: function (data) {
                     console.log(data.responseText);
@@ -400,6 +414,72 @@ For more information on enabling MVC for empty projects, visit https://go.micros
                 }
             });
         }
+
+        function dataIsiKuesioner() {
+            var notVerified = document.getElementById('dataDJP');
+            var dataByStatus;
+            var jumlahBelumVerifikasi;
+
+            var hostname = "https://localhost:44384/";
+            var method = "GET";
+            var url = hostname + "GetAllRegistrasiAlumniByStatus";
+            $.ajax({
+                url: url,
+                method: method,
+                contentType: "application/json",
+                success: function (data) {
+                    dataIsi = data.data;
+
+                    for (let i = 0; i < dataByStatus.length; i++) {
+                        if (dataByStatus[i].value === "Belum Diverifikasi") {
+                            jumlahBelumVerifik asi = dataByStatus[i].count;
+                        }
+                    }
+                    console.log(jumlahBelumVerifikasi);
+
+                    notVerified.value = jumlahBelumVerifikasi;
+                    notVerified.innerText = jumlahBelumVerifikasi;
+
+//                    ----- Data Web Form -----
+
+                    for (let i = 0; i < dataIsi.length; i++) {
+                        dataKuesioner[i] = dataIsi[i].hitung;
+                            labelsKuesioner[i] = dataIsi[i].jenis_kuesioner;
+                    }
+
+                    console.log(dataKuesioner);
+                    console.log(labelsKuesioner);
+
+                    new Chart(ctxxx, {
+                        type: 'pie',
+                        data: {
+                            labels: labelsKuesioner,
+                            datasets: [{
+                                label: 'Jumlah Kuesioner',
+                                data: dataKuesioner,
+                                backgroundColor: [
+                                    'rgb(255, 99, 132)',
+                                    'rgb(54, 162, 235)',
+                                    'rgb(255, 205, 86)'
+                                ],
+                                hoverOffset: 4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            width: 700,
+                        },
+                    });
+                },
+                error: function (data) {
+                    console.log(data.responseText);
+                }
+            });
+        }
+    });
+</script>
+<script>
 @*
         $.ajax({
             type: "POST",
@@ -568,7 +648,7 @@ For more information on enabling MVC for empty projects, visit https://go.micros
             }
         });
         *@
-    });
+   
 </script>
      @* 
 <script type="text/javascript">
