@@ -1,0 +1,113 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Detail Jawaban Alumni";
+}
+
+<h2 class="text-center">Detail Jawaban Alumni</h2>
+
+<div style="overflow-x: auto; width: 100%;">
+    <table id="dataTable" style="width: 100%;" class="table table-hover table-bordered table-condensed text-center">
+        <thead>
+            <tr>
+                <th class="align-middle text-center" width="1%">NIM</th>
+                <th class="align-middle text-center" width="1%">Nama</th>
+                <th class="align-middle text-center">Program Studi</th>
+                <th class="align-middle text-center">Status</th>
+                <th class="align-middle text-center">Kuesioner Sudah Diisi</th>
+                <th class="align-middle text-center" width="1%">Aksi</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var statusFilter = @ViewBag.Status;
+
+            $('#dataTable').DataTable({
+                "language": {
+                    "emptyTable": "Tidak ada Data Pengisian Kuesioner",
+                    "zeroRecords": "Tidak ada Data Pengisian Kuesioner"
+                },
+                "dom": 'Bfrti<"bottom-wrapper"p>',
+                scrollX: true,
+                "bLengthChange": false,
+                "bInfo": false,
+                "pageLength": 10,
+                "ajax": {
+                    "url": 'https://localhost:44384/GetPengisianKuesionerByProdi?year=' + @ViewBag.Tahun + '&prodi=' + @ViewBag.IdProdi,
+                    "type": "GET",
+                    "datatype": "json",
+                    "error": function (xhr, error, thrown) {
+                        console.log("Error fetching data from server:", error);
+                        console.log("Server response:", xhr.responseText);
+                    }
+                },
+                "columns": [
+                    { "data": "nim" },
+                    { "data": "nama" },
+                    { "data": "nama_prodi" },
+                    { "data": "status" },
+                    { "data": "periode" },
+                    {
+                        "data": "nim",
+                        "render": function (data) {
+                            return '<a href="@Url.Action("Edit", "Pertanyaan_Kuesioner")/' + data + 
+                            '" rel="tooltip" data-placement="left" title="Ubah Pertanyaan Kuesioner"><i class="fa fa-edit" aria-hidden="true"></i></a> &nbsp;'
+                        }
+                    }
+                ],
+                "createdRow": function (row, data, dataIndex) {
+                    if (statusFilter === 1 && data.status === 'Belum Mengisi')  {
+                        $(row).hide();
+                    } else if (statusFilter === 2 && data.status === 'Sudah Mengisi')  {
+                        $(row).hide();
+                    }
+                },
+                "buttons": []
+            });
+
+            $('#dataTable tbody').on('click', '.remove', function () {
+                var id = $(this).data('id');
+                console.log(id);
+                Swal.fire({
+                    title: 'Apakah anda yakin menghapus Pertanyaan Kuesioner dengan ID ' + id,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#5cb85c',
+                    cancelButtonColor: '#d9534f',
+                    confirmButtonText: 'Ya Hapus!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '@Url.Action("Hapus", "Pertanyaan_Kuesioner")?id=' + id,
+                            method: "POST"
+
+                        });
+                        Swal.fire({
+                            title: 'Berhasil !',
+                            text: 'Pertanyaan Kuesioner dengan ID ' + id + '. Berhasil Dihapus.',
+                            type: 'success',
+                            icon: 'success'
+                        }).then(okay => {
+                            if (okay) {
+                                window.location.href = '@Url.Action("Index", "Pertanyaan_Kuesioner")'
+                            }
+                        });
+                    } else if (result.dismiss === Swal.DismissReason.cancel) {
+                        Swal.fire({
+                            title: 'Batal !',
+                            text: 'Pertanyaan Kuesioner dengan ID ' + id + '. Batal Dihapus.',
+                            type: 'error',
+                            icon: 'error'
+                        });
+                    }
+                });
+            });
+        });
+    </script>
+}

@@ -8,5 +8,19 @@ namespace PRG_4.Controllers
         {
             return View();
         }
+        public IActionResult DetailByProdi(int idProdi, int tahun, int status)
+        {
+            ViewData["Tahun"] = tahun;
+            ViewData["IdProdi"] = idProdi;
+            ViewData["Status"] = status;
+
+            return View();
+        }
+        public IActionResult DetailJawabanAlumni(int nim)
+        {
+            ViewData["Nim"] = nim;
+
+            return View();
+        }
     }
 }
