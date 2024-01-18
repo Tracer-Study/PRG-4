@@ -137,46 +137,18 @@ For more information on enabling MVC for empty projects, visit https://go.micros
                                     </center>
                                 </div>
                             </div>
-                            <div style="overflow-x: auto; width: 100%; display: block; box-sizing: border-box; height: 300px;">
-                                <table class="table table-hover table-bordered table-condensed table-striped grid scrollstyle">
+                            <div style="overflow-x: auto; width: 100%; display: block; box-sizing: border-box; height: 450px;">
+                                <table id="myKorespondenTable" class="table table-hover table-bordered table-condensed table-striped grid scrollstyle">
                                     <thead>
                                         <tr>
-                                            <th>P4</th>
-                                            <th>TPM</th>
-                                            <th>TO</th>
-                                            <th>MI</th>
-                                            <th>MK</th>
-                                            <th>TKBG</th>
-                                            <th>TRPAB</th>
-                                            <th>TRL</th>
+                                            <th>No</th>
+                                            <th>Program Studi</th>
+                                            <th>Sudah Mengisi</th>
+                                            <th>Belum Mengisi</th>
+                                            @* <th>Aksi</th> *@
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        @* @foreach (var item in Model)
-                                        {
-                                            <tr>
-                                                <td>
-                                                    @if (item.Status == "Belum Diverifikasi")
-                                                    {
-                                                        <div>
-                                                            <a rel="tooltip" data-placement="left" title="Terima Akun Alumni" href="#" data-id="@item.Id" data-nim="@item.Nim" class="accept">
-                                                                <i class="fa fa-check" aria-hidden="true"></i>
-                                                            </a>
-                                                            &nbsp;
-                                                            <a rel="tooltip" data-placement="left" title="Tolak Akun Alumni" href="#" data-id="@item.Id" data-nim="@item.Nim" class="reject">
-                                                                <i class="fa fa-times" aria-hidden="true"></i>
-                                                            </a>
-                                                        </div>
-                                                    }
-                                                    <label asp-if="item.Status == 'Diterima'">Alumni Diterima</label>
-                                                    <label asp-if="item.Status == 'Ditolak'">Alumni Ditolak</label>
-                                                </td>
-                                                <td>@item.Nim</td>
-                                                <td>@item.Nama</td>
-                                                <td>@item.TahunLulus</td>
-                                            </tr>
-                                        } *@
-                                    </tbody>
+                                    <tbody id="table-isi-body" style="text-align: center;"></tbody>
                                 </table>
                             </div>
                         </div>
@@ -223,6 +195,8 @@ For more information on enabling MVC for empty projects, visit https://go.micros
         dataAlumniByYears();
         dataAlumniByProdi();
         dataAlumniByStatus();
+        dataIsiKuesioner();
+        dataIsiKuesionerByProdi(); 
 
         document.getElementById('myYearFilter').addEventListener('change', onYearFilterChange);
 
@@ -244,20 +218,26 @@ For more information on enabling MVC for empty projects, visit https://go.micros
         var labelsKuesioner = [];
         var dataKuesioner = [];
 
-        var newChart;
+        var newChartYear;
+        var newChartProdi;
+        var newChartIsi;
 
         function onYearFilterChange() {
+            dataAlumniByYears();
             dataAlumniByProdi();
+            dataIsiKuesioner();
+            dataIsiKuesionerByProdi();
         }
 
         function dataAlumniByYears() {
+            var year = document.getElementById('myYearFilter').value;
             var labelsTahunLulus = [];
             var dataTahunLulus = [];
 
 
             var hostname = "https://localhost:44384/";
             var method = "GET";
-            var url = hostname + "GetAllRegistrasiAlumniByYears";
+            var url = hostname + "GetAllRegistrasiAlumniByYears?year=" + year;
             $.ajax({
                 url: url,
                 method: method,
@@ -267,30 +247,59 @@ For more information on enabling MVC for empty projects, visit https://go.micros
 
                     var startIndex = Math.max(0, hasilChartBar.length - 5);
                     var slicedData = hasilChartBar.slice(startIndex);
+                    if (newChartYear) {
+                        for (let i = 0; i < slicedData.length; i++) {
+                            dataTahunLulus[i] = slicedData[i].count;
+                            labelsTahunLulus[i] = slicedData[i].value;
+                        }
+                        newChartYear.data.labels = labelsTahunLulus;
+                        newChartYear.data.datasets[0].data = dataTahunLulus;
+                        newChartYear.data.datasets[0].label= 'Data Alumni Berdasarkan Tahun';
 
-                    for (let i = 0; i < slicedData.length; i++) {
-                        dataTahunLulus[i] = slicedData[i].count;
-                        labelsTahunLulus[i] = slicedData[i].value;
-                    }
+                        newChartYear.data.datasets.forEach(function (dataset, index) {
+                            dataset.backgroundColor = 'rgb(47, 5, 162)';
+                            dataset.borderColor = 'rgb(255, 255, 255)'; 
+                            dataset.borderWidth = 1; 
+                            dataset.borderRadius = 10; 
+                        });
 
-                    new Chart(ctx, {
-                        type: 'bar',
-                        data: {
-                            labels: labelsTahunLulus,
-                            datasets: [{
-                                label: 'Data Alumni Berdasarkan Tahun',
-                                data: dataTahunLulus,
-                                borderWidth: 1
-                            }]
-                        },
-                        options: {
-                            scales: {
-                                y: {
-                                    beginAtZero: true
+                        newChartYear.update();
+                    } else {
+                        for (let i = 0; i < slicedData.length; i++) {
+                            dataTahunLulus[i] = slicedData[i].count;
+                            labelsTahunLulus[i] = slicedData[i].value;
+                        }
+
+                        newChartYear = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: labelsTahunLulus,
+                                datasets: [{
+                                    label: 'Data Alumni Berdasarkan Tahun',
+                                    data: dataTahunLulus,
+                                    borderWidth: 1,
+                                    backgroundColor: 'rgb(47, 5, 162)',
+                                    borderColor: 'rgb(255, 255, 255)',
+                                    borderRadius: 10
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    y: {
+                                        beginAtZero: true,
+                                        suggestedMin: 30,
+                                        suggestedMax: 100,
+                                        ticks: {
+                                            stepSize: 20
+                                        }   
+                                    },
+                                    x: {
+                                        beginAtZero: true
+                                    }
                                 }
                             }
-                        }
-                    });
+                        });
+                    }
                 },
                 error: function (data) {
                     console.log(data.responseText);
@@ -314,46 +323,88 @@ For more information on enabling MVC for empty projects, visit https://go.micros
                 contentType: "application/json",
                 success: function (data) {
                     hasilChartProdi = data.data;
-                    labelsProdiLulus = ["MO","TKBG","MI","MK","TPM","P4","TRL","TRPAB"];
                     var startIndex = Math.max(0);
-
-                    console.log(hasilChartProdi)
                     
-                    if (newChart) {
+                    if (newChartProdi) {
                         for (let i = 0; i < hasilChartProdi.length; i++) {
                             dataProdiLulus[i] = hasilChartProdi[i].count;
-                            //labelsProdiLulus[i] = hasilChartProdi[i].valueName;
+
+                            if (hasilChartProdi[i].valueName === "Mesin Otomotif") {
+                                labelsProdiLulus[i] = "MO";
+                            } else if (hasilChartProdi[i].valueName === "Teknologi Konstruksi Bangungan Gedung") {
+                                labelsProdiLulus[i] = "TKBG";
+                            } else if (hasilChartProdi[i].valueName === "Manajemen Informatika") {
+                                labelsProdiLulus[i] = "MI";
+                            } else if (hasilChartProdi[i].valueName === "Mekatronika") {
+                                labelsProdiLulus[i] = "MK";
+                            } else if (hasilChartProdi[i].valueName === "Teknik Produksi dan Proses Manufaktur") {
+                                labelsProdiLulus[i] = "TPM";
+                            } else if (hasilChartProdi[i].valueName === "Teknologi Rekayasa Pemeliharaan Alat Berat") {
+                                labelsProdiLulus[i] = "TRPAB";
+                            } else if (hasilChartProdi[i].valueName === "Pembuatan Peralatan dan Perkakas Produksi") {
+                                labelsProdiLulus[i] = "P4";
+                            } else if (hasilChartProdi[i].valueName === "Teknologi Rekayasa Logistik") {
+                                labelsProdiLulus[i] = "TRL";
+                            } 
                         }
 
-                        newChart.data.labels = labelsProdiLulus;
-                        newChart.data.datasets[0].data = dataProdiLulus;
-                        newChart.data.datasets[0].label= 'Data Alumni Berdasarkan Prodi Tahun ' + tahun;
+                        newChartProdi.data.labels = labelsProdiLulus;
+                        newChartProdi.data.datasets[0].data = dataProdiLulus;
+                        newChartProdi.data.datasets[0].label= 'Data Alumni Berdasarkan Prodi Tahun ' + tahun;
 
-                        newChart.update();
+                        newChartProdi.data.datasets.forEach(function (dataset, index) {
+                            dataset.backgroundColor = 'rgb(47, 5, 162)';
+                            dataset.borderColor = 'rgb(255, 255, 255)'; 
+                            dataset.borderWidth = 1; 
+                            dataset.borderRadius = 10; 
+                        });
+
+                        newChartProdi.update();
                     } else {
 
                         for (let i = 0; i < hasilChartProdi.length; i++) {
                             dataProdiLulus[i] = hasilChartProdi[i].count;
-                            //labelsProdiLulus[i] = hasilChartProdi[i].valueName;
+                            if (hasilChartProdi[i].valueName === "Mesin Otomotif") {
+                                labelsProdiLulus[i] = "MO";
+                            } else if (hasilChartProdi[i].valueName === "Teknologi Konstruksi Bangungan Gedung") {
+                                labelsProdiLulus[i] = "TKBG";
+                            } else if (hasilChartProdi[i].valueName === "Manajemen Informatika") {
+                                labelsProdiLulus[i] = "MI";
+                            } else if (hasilChartProdi[i].valueName === "Mekatronika") {
+                                labelsProdiLulus[i] = "MK";
+                            } else if (hasilChartProdi[i].valueName === "Teknik Produksi dan Proses Manufaktur") {
+                                labelsProdiLulus[i] = "TPM";
+                            } else if (hasilChartProdi[i].valueName === "Teknologi Rekayasa Pemeliharaan Alat Berat") {
+                                labelsProdiLulus[i] = "TRPAB";
+                            } else if (hasilChartProdi[i].valueName === "Pembuatan Peralatan dan Perkakas Produksi") {
+                                labelsProdiLulus[i] = "P4";
+                            } else if (hasilChartProdi[i].valueName === "Teknologi Rekayasa Logistik") {
+                                labelsProdiLulus[i] = "TRL";
+                            }
                         }
 
-                        newChart = new Chart(ctxx, {
+                        newChartProdi = new Chart(ctxx, {
                             type: 'bar',
                             data: {
                                 labels: labelsProdiLulus,
                                 datasets: [{
                                     label: 'Data Alumni Berdasarkan Prodi Tahun ' + tahun,
-                                        data: dataProdiLulus,
-                                    borderWidth: 1
+                                    data: dataProdiLulus,
+                                    borderWidth: 1,
+                                    backgroundColor: 'rgb(47, 5, 162)',
+                                    borderColor: 'rgb(255, 255, 255)',
+                                    borderRadius: 10
                                 }]
                             },
                             options: {
                                 scales: {
                                     y: {
                                         beginAtZero: true,
+                                        suggestedMin: 30,
+                                        suggestedMax: 100,
                                         ticks: {
-                                    stepSize: 1 // Menambahkan opsi untuk menetapkan langkah pada sumbu y
-                                }
+                                            stepSize: 20
+                                        }   
                                     },
                                     x: {
                                         beginAtZero: true
@@ -362,7 +413,7 @@ For more information on enabling MVC for empty projects, visit https://go.micros
                             }
                         });
                     
-                        }
+                    }
                 },
                 error: function (data) {
                     console.log(data.responseText);
@@ -399,7 +450,116 @@ For more information on enabling MVC for empty projects, visit https://go.micros
                     console.log(data.responseText);
                 }
             });
+        } 
+
+        function dataIsiKuesioner() {
+            var tahun = document.getElementById('myYearFilter').value;
+            var dataBelum = document.getElementById('dataJK');
+
+            var labelsKuesioner = ["Belum Mengisi Kusesioner","Sudah Mengisi Kusesioner"];
+            var dataKuesioner = [];
+
+            var jumlahBelumVerifikasi;
+
+            var hostname = "https://localhost:44384/";
+            var method = "GET";
+            var url = hostname + "GetJumlahIsiKuesioner?year=" + tahun;
+            $.ajax({
+                url: url,
+                method: method,
+                contentType: "application/json",
+                success: function (data) {
+                    dataIsi = data.data;
+
+                    var sudah = dataIsi[0].sudah_isi;
+                    var belum = dataIsi[0].belum_isi;
+
+                    dataBelum.value = sudah;
+                    dataBelum.innerText = sudah;
+
+
+                    if (newChartIsi) {
+                        dataKuesioner[0] = belum;
+                        dataKuesioner[1] = sudah;
+                        
+
+                        newChartIsi.data.labels = labelsKuesioner;
+                        newChartIsi.data.datasets[0].data = dataKuesioner;
+                        newChartIsi.data.datasets[0].label= 'Jumlah Isi Kuesioner Tahun ' + tahun;
+
+                        newChartIsi.update();
+                    } else {
+                    
+                        dataKuesioner[0] = belum;
+                        dataKuesioner[1] = sudah;
+
+                        newChartIsi = new Chart(ctxxx, {
+                            type: 'pie',
+                            data: {
+                                labels: labelsKuesioner,
+                                datasets: [{
+                                    label: 'Jumlah Isi Kuesioner Tahun ' + tahun,
+                                    data: dataKuesioner,
+                                    backgroundColor: [
+                                        'rgb(47, 5, 162)',
+                                        'rgb(79,138,254)'
+                                    ],
+                                    hoverOffset: 4
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                            },
+                        });
+                    }
+                },
+                error: function (data) {
+                    console.log(data.responseText);
+                }
+            });
         }
+
+        function dataIsiKuesionerByProdi() {
+            var tahun = document.getElementById('myYearFilter').value;
+            var dataBelum = document.getElementById('dataJK');
+
+            var labelsKuesioner = ["Belum Mengisi Kusesioner","Sudah Mengisi Kusesioner"];
+            var dataKuesioner = [];
+
+            var dataIsiByProdi;
+
+            var hostname = "https://localhost:44384/";
+            var method = "GET";
+            var url = hostname + "GetJumlahIsiKuesionerByProdi?year=" + tahun;
+            $.ajax({
+                url: url,
+                method: method,
+                contentType: "application/json",
+                success: function (data) {
+                    dataIsiByProdi = data.data;
+                    $('#table-isi-body').empty();
+
+                    var i = 0;
+                    dataIsiByProdi.forEach(function(item) {
+                        i++;
+                        var newDataIsi = "<tr>" +
+                            "<td>" + i + "</td>" +
+                            "<td>" + item.nama_prodi + "</td>" +
+                            "<td> <a href='/Admin/DetailByProdi?idProdi=" + item.id_prodi + "&tahun=" + tahun + "&status=1' data-toggle='tooltip' data-placement='bottom' title='Lihat Alumni Yang Sudah Mengisi Kuesioner'>" + item.sudah_isi + "</a></td>" +
+                            "<td> <a href='/Admin/DetailByProdi?idProdi=" + item.id_prodi + "&tahun=" + tahun + "&status=2' data-toggle='tooltip' data-placement='bottom' title='Lihat Alumni Yang Belum Mengisi Kuesioner'>" + item.belum_isi + "</a></td>";
+                            //"<td>" + item.id_prodi + "</td>";
+                        
+                            $('#table-isi-body').append(newDataIsi);
+                    });
+                },
+                error: function (data) {
+                    console.log(data.responseText);
+                }
+            });
+        }
+    });
+</script>
+<script>
 @*
         $.ajax({
             type: "POST",
@@ -568,7 +728,7 @@ For more information on enabling MVC for empty projects, visit https://go.micros
             }
         });
         *@
-    });
+   
 </script>
      @* 
 <script type="text/javascript">
