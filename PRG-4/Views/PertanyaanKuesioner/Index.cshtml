@@ -1,12 +1,10 @@
-
 @{
-    ViewBag.Title = "Pertanyaan Kuesioner";
+    ViewBag.Title = "Pertanyaan Kuesioner - Tracer Study";
 }
 
 <div>
     <h2 class="text-center">Daftar Pertanyaan Kuesioner</h2>
 </div>
-
 
 <div style="overflow-x: auto; width: 100%;">
     <table id="dataTable" style="width: 100%;" class="table table-hover table-bordered table-condensed text-center">
@@ -17,38 +15,10 @@
                 <th class="align-middle text-center">Deskripsi Pertanyaan</th>
                 <th class="align-middle text-center">Kode Pertanyaan</th>
                 <th class="align-middle text-center">Periode - Jenis Kuesioner</th>
-                <th class="align-middle text-center">Keterangan</th>
                 <th class="align-middle text-center" width="1%">Aksi</th>
             </tr>
         </thead>
         <tbody>
-            @* @foreach (var row in Model)s
-            {
-                <tr style="height: 45px;">
-                    <td>@row.Id</td>
-                    <td>@row.NoUrutan</td>
-                    <td>@row.DeskripsiPertanyaan</td>
-                    <td>@row.Kode</td>
-                    <td>@row.PeriodeJenisKuesioner</td>
-                    <td>@row.Keterangan</td>
-                    <td>
-                        @if (row.Keterangan != "Sudah ada Hasil Kuesioner")
-                        {
-                            <a href='@Url.Action("Edit", "Pertanyaan_Kuesioner", new { id = row.Id })' rel="tooltip" data-placement="left" title='Ubah Pertanyaan Kuesioner'>
-                                <i class="fa fa-edit" aria-hidden="true"></i>
-                            </a> &nbsp;
-                            <a href="javascript:void(0)" class="remove" data-id="@row.Id" rel="tooltip" data-placement="left" title="Hapus Pertanyaan Kuesioner">
-                                <i class="fa fa-trash" aria-hidden="true"></i>
-                            </a>
-                        }
-                        else
-                        {
-                            <i class="fa fa-edit" aria-hidden="true"></i> &nbsp;
-                            <i class="fa fa-trash" aria-hidden="true"></i>
-                        }
-                    </td>
-                </tr>
-            } *@
         </tbody>
     </table>
 </div>
@@ -59,13 +29,36 @@
             $('#dataTable').DataTable({
                 "language": {
                     "emptyTable": "Tidak ada Data Pertanyaan Kuesioner",
-                    "zeroRecords": "Tidak ada Data Pertanyaan kuesioner"
+                    "zeroRecords": "Tidak ada Data Pertanyaan Kuesioner"
                 },
                 "dom": 'Bfrti<"bottom-wrapper"p>',
                 scrollX: true,
                 "bLengthChange": false,
                 "bInfo": false,
                 "pageLength": 10,
+                "ajax": {
+                    "url": 'https://localhost:44384/GetAllPertanyaanKuesioner',
+                    "type": "GET",
+                    "datatype": "json",
+                    "error": function (xhr, error, thrown) {
+                        console.log("Error fetching data from server:", error);
+                        console.log("Server response:", xhr.responseText);
+                    }
+                },
+                "columns": [
+                    { "data": "id_pku" },
+                    { "data": "no_urutan" },
+                    { "data": "deskripsiPertanyaan" },
+                    { "data": "kode" },
+                    { "data": "id_detailPeriode" },
+                    {
+                        "data": "nim",
+                        "render": function (data) {
+                            return '<a href="/Admin/DetailJawabanAlumni?nim=' + data + 
+                            '" rel="tooltip" data-placement="left" title="Lihat Detail Jawaban Kuesioner"><i class="fa fa-list" aria-hidden="true"></i></a>';
+                        }
+                    }
+                ],
                 "buttons": [
                     {
                         text: '<i class="fa fa-plus"></i> Tambah',
@@ -79,13 +72,14 @@
                     },
                 ]
             });
+
         });
 
         $(".remove").click(function () {
             var id = $(this).data('id');
             console.log(id);
             Swal.fire({
-                title: 'Apakah anda ingin menghapus Pertanyaan Kuesioner dengan ID ' + id,
+                title: 'Apakah anda ingin menghapus Pertanyaan kuesioner dengan ID ' + id,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#5cb85c',
@@ -106,7 +100,7 @@
                         if (okay) {
                             window.location.href = '@Url.Action("Index", "Pertanyaan_Kuesioner")'
                         }
-                    });
+                    }); 
                 } else if (result.dismiss === Swal.DismissReason.cancel) {
                     Swal.fire({
                         title: 'Batal !',
