@@ -145,7 +145,7 @@ For more information on enabling MVC for empty projects, visit https://go.micros
                                             <th>Program Studi</th>
                                             <th>Sudah Mengisi</th>
                                             <th>Belum Mengisi</th>
-                                            <th>Aksi</th>
+                                            @* <th>Aksi</th> *@
                                         </tr>
                                     </thead>
                                     <tbody id="table-isi-body" style="text-align: center;"></tbody>
@@ -226,7 +226,7 @@ For more information on enabling MVC for empty projects, visit https://go.micros
             dataAlumniByYears();
             dataAlumniByProdi();
             dataIsiKuesioner();
-            dataIsiKuesionerByProdi(); 
+            dataIsiKuesionerByProdi();
         }
 
         function dataAlumniByYears() {
@@ -546,8 +546,8 @@ For more information on enabling MVC for empty projects, visit https://go.micros
                             "<td>" + i + "</td>" +
                             "<td>" + item.nama_prodi + "</td>" +
                             "<td> <a href='/Admin/DetailByProdi?idProdi=" + item.id_prodi + "&tahun=" + tahun + "&status=1' data-toggle='tooltip' data-placement='bottom' title='Lihat Alumni Yang Sudah Mengisi Kuesioner'>" + item.sudah_isi + "</a></td>" +
-                            "<td> <a href='/Admin/DetailByProdi?idProdi=" + item.id_prodi + "&tahun=" + tahun + "&status=2' data-toggle='tooltip' data-placement='bottom' title='Lihat Alumni Yang Belum Mengisi Kuesioner'>" + item.belum_isi + "</a></td>" +
-                            "<td>" + item.id_prodi + "</td>";
+                            "<td> <a href='/Admin/DetailByProdi?idProdi=" + item.id_prodi + "&tahun=" + tahun + "&status=2' data-toggle='tooltip' data-placement='bottom' title='Lihat Alumni Yang Belum Mengisi Kuesioner'>" + item.belum_isi + "</a></td>";
+                            //"<td>" + item.id_prodi + "</td>";
                         
                             $('#table-isi-body').append(newDataIsi);
                     });
