@@ -1,9 +1,70 @@
 ﻿@{
-    ViewBag.Title = "Detail Pertanyaan Kuesioner - Tracer Study";
+    ViewBag.Title = "Detail Jawaban Kuesioner - Tracer Study";
 }
 
 <div>
-    <h2 class="text-center">Detail Pertanyaan Kuesioner</h2>
+    <h2 class="text-center">Detail Jawaban Kuesioner</h2>
 </div>
 
+<div class="row">
+    <div class="card w-100" style="border-radius: 10px;">
+        <div class="row">
+            <div class="col-lg-6 col-md-12 mb-4 justify-content-center">
+                <div class="card card-stats mb-4 p-3" style="border-radius: 10px;">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <center>
+                                    <span style="font-size: larger; font-weight: bold;">Detail Jawaban Kuesioner</span><br />
+                                    <br />
+                                </center>
+                            </div>
+                        </div>
+                        <canvas id="myYearChartBar" style="display: block; box-sizing: border-box; height: 394px; width: 789px; margin-top: 20px;"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-3">
+            <a href="@Url.Action("Index", "PertanyaanKuesioner")" class="btn btn-primary">Kembali</a>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            function dataDetailJawabanKuesioner() {
+                var dataSementara = {
+                    labels: ['A', 'B', 'C', 'D'],
+                    values: [30, 40, 20, 10]
+                };
+
+                var chartData = {
+                    labels: dataSementara.labels,
+                    datasets: [{
+                        label: 'Jawaban Kuesioner',
+                        data: dataSementara.values,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                };
+
+                var chartOptions = {
+                    responsive: false,
+                    maintainAspectRatio: false
+                };
+
+                var ctx = document.getElementById('myYearChartBar').getContext('2d');
+                var newChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: chartData,
+                    options: chartOptions
+                });
+            }
+
+            dataDetailJawabanKuesioner();
+        });
+    </script>
 }

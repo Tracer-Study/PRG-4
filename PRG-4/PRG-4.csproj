@@ -7,12 +7,4 @@
     <RootNamespace>PRG_4</RootNamespace>
   </PropertyGroup>
 
-  <ItemGroup>
-    <None Remove="Views\DetailPertanyaanKuesioner\Index.cshtml~RF184d7b3.TMP" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Views\DetailPertanyaanKuesioner\" />
-  </ItemGroup>
-
 </Project>
