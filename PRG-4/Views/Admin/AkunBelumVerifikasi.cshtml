@@ -1,0 +1,117 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Detail Akun Belum Diverifikasi";
+
+}
+
+<h2 class="text-center">Detail Akun Belum Diverifikasi</h2>
+
+<div style="overflow-x: auto; width: 100%;">
+    <table id="dataTable" style="width: 100%;" class="table table-hover table-bordered table-condensed text-center">
+        <thead>
+            <tr>
+                <th class="align-middle text-center" width="1%">No</th>
+                <th class="align-middle text-center" width="20%">Aksi</th>
+                <th class="align-middle text-center" width="25%">Nomor Induk Mahasiswa</th>
+                <th class="align-middle text-center" width="25%">Nama Alumni</th>
+                <th class="align-middle text-center" width="25%">Tahun Lulus</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+    <a asp-controller="Admin" asp-action="Index" id="btnCancelDetail" class="btn btn-secondary">Kembali</a>
+</div>
+
+@section scripts {
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var no = 1;
+
+            $('#dataTable').DataTable({
+                "language": {
+                    "emptyTable": "Tidak ada Data Alumni",
+                    "zeroRecords": "Tidak ada Data Alumni"
+                },
+                "dom": 'Bfrti<"bottom-wrapper"p>',
+                scrollX: true,
+                "bLengthChange": false,
+                "bInfo": false,
+                "pageLength": 10,
+                "ajax": {
+                    "url": 'https://localhost:44384/GetDataAkunBelumVerifikasi?year=' + '@ViewBag.Tahun',
+                    "type": "GET",
+                    "datatype": "json",
+                    "error": function (xhr, error, thrown) {
+                        console.log("Error fetching data from server:", error);
+                        console.log("Server response:", xhr.responseText);
+                    }
+                },
+                "columns": [
+                    {
+                        "data": "id",
+                        "render": function (data) {
+                            return no++;
+                        }
+                    },
+                    {
+                        "data": "id",
+                        "render": function (data) {
+                            return '<a rel="tooltip" data-placement="left" title="Terima Akun Alumni" href="#" class="accept" style="margin: 0px 20px;" onclick="updateStatusDiterima(' + data + ')">' +
+                                '<i class="fa fa-check" aria-hidden="true" ></i></a>' +
+                                '<a rel="tooltip" data-placement="left" title="Tolak Akun Alumni" href="#" class="accept" style="margin: 0px 20px;" onclick="updateStatusDitolak(' + data + ')">' +
+                                '<i class="fa fa-times" aria-hidden="true" ></i></a>'
+                        }
+                    },
+                    { "data": "nim" },
+                    { "data": "nama" },
+                    { "data": "tahun_lulus" }
+                ],
+                "buttons": []
+            });
+        });
+    </script>
+    <script>
+        function updateStatusDiterima(id) {
+            var hostname = "https://localhost:44384/";
+            var method = "PUT";
+            var url = hostname + "UpdateStatusDiterima?id=" + id + "&namaAdmin=" + '@ViewBag.LoginName';
+            $.ajax({
+                url: url,
+                method: method,
+                contentType: "application/json",
+                success: function (data) {
+                    swal("Berhasil!", data.message, "success").then(() => {
+                        window.location.reload();
+                    });
+                },
+                error: function (data) {
+                    console.log(data.responseText);
+                }
+            });
+        }
+
+        function updateStatusDitolak(id) {
+            var hostname = "https://localhost:44384/";
+            var method = "PUT";
+            var url = hostname + "UpdateStatusDitolak?id=" + id + "&namaAdmin=" + '@ViewBag.LoginName';
+            $.ajax({
+                url: url,
+                method: method,
+                contentType: "application/json",
+                success: function (data) {
+                    swal("Berhasil!", data.message, "success").then(() => {
+                        window.location.reload();
+                    });
+                },
+                error: function (data) {
+                    console.log(data.responseText);
+                }
+            });
+        }
+    </script>
+}

@@ -6,6 +6,9 @@ namespace PRG_4.Controllers
     {
         public IActionResult Index()
         {
+            var name = HttpContext.Session.GetString("Name");
+
+            ViewData["LoginName"] = name;
             return View();
         }
     }

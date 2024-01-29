@@ -6,45 +6,80 @@
     <h2 class="text-center">Detail Jawaban Kuesioner</h2>
 </div>
 
-<div class="row">
-    <div class="card w-100" style="border-radius: 10px;">
-        <div class="row">
-            <div class="col-lg-6 col-md-12 mb-4 justify-content-center">
-                <div class="card card-stats mb-4 p-3" style="border-radius: 10px;">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col">
-                                <center>
-                                    <span style="font-size: larger; font-weight: bold;">Detail Jawaban Kuesioner</span><br />
-                                    <br />
-                                </center>
-                            </div>
+<div style="overflow-x: auto; width: 100%;">
+    <table id="dataTable" style="width: 100%;" class="table table-hover table-bordered table-condensed text-center">
+        <thead>
+            <tr>
+                <th class="align-middle text-center" width="1%">No.</th>
+                <th class="align-middle text-center" width="5%">ID Pertanyaan</th>
+                <th class="align-middle text-center" width="5%">Urutan</th>
+                <th class="align-middle text-center" width="50%">Deskripsi Pertanyaan</th>
+                <th class="align-middle text-center" width="20%">Kode Pertanyaan</th>
+                <th class="align-middle text-center" width="10%">Periode - Jenis Kuesioner</th>
+                <th class="align-middle text-center" width="9%">Aksi</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+
+    <div id="grafikHasil" class="row w-100 p-3">
+        <div class="col-md-12 mb-4 justify-content-center">
+            <div class="card card-stats mb-4 p-3" style="border-radius: 10px;">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <center>
+                                @* <span style="font-size: Larger; font-weight: bold;">Data Alumni Berdasarkan Tahun</span><br> *@
+                                <br>
+                            </center>
                         </div>
-                        <canvas id="myYearChartBar" style="display: block; box-sizing: border-box; height: 394px; width: 789px; margin-top: 20px;"></canvas>
                     </div>
+
+                    <canvas id="myKuesionerChartBar" style="display: block; box-sizing: border-box; height: 394px; width: 100%;"></canvas>
                 </div>
             </div>
         </div>
-        <div class="text-center mt-3">
-            <a href="@Url.Action("Index", "PertanyaanKuesioner")" class="btn btn-primary">Kembali</a>
-        </div>
     </div>
+
+    <a asp-controller="PertanyaanKuesioner" asp-action="Index" id="btnCancelDetail" class="btn btn-secondary">Kembali</a>
+
 </div>
+
+
 
 @section scripts {
     <script type="text/javascript">
         $(document).ready(function () {
-            function dataDetailJawabanKuesioner() {
-                var dataSementara = {
-                    labels: ['A', 'B', 'C', 'D'],
-                    values: [30, 40, 20, 10]
-                };
+            var jenis = @ViewBag.Jenis;
+            var idPertanyaan = '@ViewBag.IdPku';
+
+            console.log(idPertanyaan, jenis);
+
+            var dataJawaban = [];
+            var deskripsiJawaban = [];
+            var idJawaban = [];
+            var jumlahJawaban = {
+                nilai: [],
+                jumlah: []
+            };
+
+            if (jenis == 1) {
+                $('#dataTable').hide();
+                $('#grafikHasil').show();
+                getJawabanKuesioner(idPertanyaan);
+                dataDetailJawabanKuesioner(idPertanyaan);
+
+                console.log(idJawaban);
+                console.log(deskripsiJawaban);
+                console.log(dataJawaban);
+                console.log(jumlahJawaban);
 
                 var chartData = {
-                    labels: dataSementara.labels,
+                    labels: deskripsiJawaban,
                     datasets: [{
                         label: 'Jawaban Kuesioner',
-                        data: dataSementara.values,
+                        data: jumlahJawaban.jumlah,
                         backgroundColor: 'rgba(75, 192, 192, 0.2)',
                         borderColor: 'rgba(75, 192, 192, 1)',
                         borderWidth: 1
@@ -56,15 +91,95 @@
                     maintainAspectRatio: false
                 };
 
-                var ctx = document.getElementById('myYearChartBar').getContext('2d');
+                var ctx = document.getElementById('myKuesionerChartBar').getContext('2d');
                 var newChart = new Chart(ctx, {
                     type: 'bar',
-                    data: chartData,
-                    options: chartOptions
+                    data: {
+                        labels: deskripsiJawaban,
+                        datasets: [{
+                            label: 'Data Alumni Berdasarkan Prodi Tahun ',
+                            data: jumlahJawaban.jumlah,
+                            borderWidth: 1,
+                            backgroundColor: 'rgb(47, 5, 162)',
+                            borderColor: 'rgb(255, 255, 255)',
+                            borderRadius: 10
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                suggestedMin: 30,
+                                suggestedMax: 100,
+                                ticks: {
+                                    stepSize: 20
+                                }
+                            },
+                            x: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+
+            } else {
+                $('#dataTable').show();
+                $('#grafikHasil').hide();
+            }
+
+            function dataDetailJawabanKuesioner(id) {
+                var hostname = "https://localhost:44384/";
+                var method = "GET";
+                var url = hostname + "GetHasilPertanyaanKuesioner?id_pku=" + id;
+                $.ajax({
+                    url: url,
+                    method: method,
+                    contentType: "application/json",
+                    success: function (data) {
+                        list = data.data;
+
+                        for (let j = 0; j < dataJawaban.length; j++) {
+                            jumlahJawaban.nilai[j] = dataJawaban[j];
+                            jumlahJawaban.jumlah[j] = 0;
+                            var i = 0;
+                            list.forEach(function (item) {
+                                if (dataJawaban[j] == item.jawabanKuesioner) {
+                                    jumlahJawaban.jumlah[j] = item.jumlahKoresponden;
+                                }
+                                i++;
+                            });
+                            
+                        }
+                    },
+                    error: function (data) {
+                        console.log(data.responseText);
+                    }
                 });
             }
 
-            dataDetailJawabanKuesioner();
+            function getJawabanKuesioner(id) {
+                var hostname = "https://localhost:44384/";
+                var method = "GET";
+                var url = hostname + "GetJawabanKuesionerByPertanyaan?id_pku=" + id;
+                $.ajax({
+                    url: url,
+                    method: method,
+                    contentType: "application/json",
+                    success: function (data) {
+                        list = data.data;
+                        var i = 0;
+                        list.forEach(function (item) {
+                            dataJawaban[i] = item.nilaiJawaban;
+                            deskripsiJawaban[i] = item.deskripsiJawaban;
+                            idJawaban[i] = item.id_jawabanKuesioner;
+                            i++;
+                        });
+                    },
+                    error: function (data) {
+                        console.log(data.responseText);
+                    }
+                });
+            }
         });
     </script>
 }

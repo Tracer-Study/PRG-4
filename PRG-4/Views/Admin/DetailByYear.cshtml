@@ -23,12 +23,13 @@
         <tbody></tbody>
     </table>
     <a asp-controller="Admin" asp-action="Index" id="btnCancelDetail" class="btn btn-secondary">Kembali</a>
+
 </div>
 
 @section scripts {
     <script type="text/javascript">
         $(document).ready(function () {
-            var statusFilter = @ViewBag.Status;
+            var statusFilter = 1;
             var no = 1;
 
             $('#dataTable').DataTable({
@@ -42,7 +43,7 @@
                 "bInfo": false,
                 "pageLength": 10,
                 "ajax": {
-                    "url": 'https://localhost:44384/GetPengisianKuesionerByProdi?year=' + @ViewBag.Tahun + '&prodi=' + @ViewBag.IdProdi,
+                    "url": 'https://localhost:44384/GetPengisianKuesionerByYear?year=' + @ViewBag.Tahun,
                     "type": "GET",
                     "datatype": "json",
                     "error": function (xhr, error, thrown) {
@@ -70,13 +71,6 @@
                         }
                     }
                 ],
-                "createdRow": function (row, data, dataIndex) {
-                    if (statusFilter === 1 && data.status === 'Belum Mengisi')  {
-                        $(row).hide();
-                    } else if (statusFilter === 2 && data.status === 'Sudah Mengisi')  {
-                        $(row).hide();
-                    }
-                },
                 "buttons": []
             });
 

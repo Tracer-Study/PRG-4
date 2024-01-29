@@ -2,6 +2,11 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddHttpClient();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromHours(1);
+});
 
 var app = builder.Build();
 
@@ -15,13 +20,11 @@ if (!app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
-
+app.UseSession();
 app.UseRouting();
 
 app.UseAuthorization();
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Admin}/{action=Index}/{id?}");
+app.MapControllerRoute(name: "default",pattern: "{controller=Login}/{action=Index}/{id?}");
 
 app.Run();

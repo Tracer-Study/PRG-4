@@ -44,7 +44,7 @@ For more information on enabling MVC for empty projects, visit https://go.micros
                                     </div>
 
                                     <p class="mt-3 mb-0 text-muted text-sm">
-                                        <a href='/Pages/Admin/Detail_Jenis_Periode.aspx' data-toggle="tooltip" data-placement="bottom" data-original-title="Lihat Detail Akun yang Belum Diverifikasi">
+                                        <a id="detailAkunLink" href='/Admin/AkunBelumVerifikasi?year=@DateTime.Now.Year' data-toggle="tooltip" data-placement="bottom" data-original-title="Lihat Detail Akun yang Belum Diverifikasi" data-year-link>
                                             <span class="mr-2">
                                                 <i class="fa fa-arrow-circle-right"></i> Detail Akun
                                             </span>
@@ -69,7 +69,7 @@ For more information on enabling MVC for empty projects, visit https://go.micros
                                     </div>
 
                                     <p class="mt-3 mb-0 text-muted text-sm">
-                                        <a href='/Pages/Admin/Jawaban_Kuesioner.aspx' data-toggle="tooltip" data-placement="bottom" data-original-title="Lihat Detail Koresponden">
+                                        <a id="detailKuesionerLink" href='/Admin/DetailByYear?year=@DateTime.Now.Year' data-toggle="tooltip" data-placement="bottom" data-original-title="Lihat Detail Koresponden">
                                             <span class="mr-2">
                                                 <i class="fa fa-arrow-circle-right"></i> Detail Koresponden
                                             </span>
@@ -89,13 +89,13 @@ For more information on enabling MVC for empty projects, visit https://go.micros
                                     <div class="row">
                                         <div class="col">
                                             <center>
-                                                <span style="font-size: Larger; font-weight: bold;">Persentase Koresponden</span><br>
+                                                <span style="font-size: Larger; font-weight: bold;">Jumlah Koresponden</span><br>
                                                 <br>
                                             </center>
                                         </div>
                                     </div>
 
-                                    <canvas id="myChartDoughnut" style="display: block; box-sizing: border-box; height:90%; width:100%;"></canvas>
+                                    <canvas id="myChartDoughnut" style="display: block; box-sizing: border-box; height:80%; width:100%;"></canvas>
                                 </div>
                             </div>
                         </div>
@@ -140,25 +140,6 @@ For more information on enabling MVC for empty projects, visit https://go.micros
                 </div>
             </div>
 
-@* 
-                <div class="col-lg-6 col-md-12 mb-4 justify-content-center">
-                    <div class="card card-stats mb-4 p-3" style="border-radius: 10px;">
-                        <div class="card-body">
-                            <div class="row">
-                                <div class="col">
-                                    <center>
-                                        <span style="font-size: Larger; font-weight: bold;">Persentase Koresponden</span><br>
-                                        <br>
-                                    </center>
-                                </div>
-                            </div>
-
-                            <canvas id="myChartDoughnut" style="display: block; box-sizing: border-box; height: 300px; width: 789px;"></canvas>
-                        </div>
-                    </div>
-                </div>
-
- *@
             <div class="row">
                 <div class="col-md-12 mb-4 justify-content-center" >
                     <div class="card card-stats mb-4 p-3" style="border-radius: 10px;">
@@ -189,34 +170,6 @@ For more information on enabling MVC for empty projects, visit https://go.micros
                     </div>
                 </div>
             </div>
-
-                @* <div class="col-lg-6 col-md-12 mb-4 justify-content-center" >
-                    <center>
-                        <span style="font-size: Larger; font-weight: bold;">Data Alumni Besertakan Status</span><br>
-                        <br>
-                    </center>
-
-                    <center>
-                        <canvas id="myChartDoughnut"></canvas>
-                    </center>
-                </div>
-
-                <div class="col-lg-6 col-md-12 mb-4 justify-content-center" >
-                    <center>
-                        <span style="font-size: Larger; font-weight: bold;">Data Kuesioner Terisi Berdasarkan Jenis Kuesioner</span><br>
-                        <br>
-                    </center>
-
-                    <% if (Int32.Parse(Session["countHK"].ToString()) == 0) { %>
-	                    <center>
-		                    <p>Data Hasil Kuesioner Tidak Ada</p>
-	                    </center>
-                    <% } else { %>
-	                    <center>
-                            <canvas id="myChartPie"></canvas>
-	                    </center>
-                    <% } %>
-                </div> *@
         </div>
     </div>
 </div>
@@ -226,6 +179,12 @@ For more information on enabling MVC for empty projects, visit https://go.micros
 
 <script type="text/javascript">
     $(document).ready(function () {
+
+        // Tambahkan pada akhir skrip JavaScript Anda
+        window.onload = function () {
+            document.getElementById('myYearFilter').value = @DateTime.Now.Year;
+        }
+
         dataAlumniByYears();
         dataAlumniByProdi();
         dataAlumniByStatus();
@@ -259,8 +218,13 @@ For more information on enabling MVC for empty projects, visit https://go.micros
         function onYearFilterChange() {
             dataAlumniByYears();
             dataAlumniByProdi();
+            dataAlumniByStatus();
             dataIsiKuesioner();
             dataIsiKuesionerByProdi();
+
+            var selectedYear = $(this).val();
+            $('#detailAkunLink').attr('href', '/Admin/AkunBelumVerifikasi?year=' + selectedYear);
+            $('#detailKuesionerLink').attr('href', '/Admin/DetailByYear?year=' + selectedYear);
         }
 
         function dataAlumniByYears() {
@@ -377,7 +341,7 @@ For more information on enabling MVC for empty projects, visit https://go.micros
                                 labelsProdiLulus[i] = "TRPAB";
                             } else if (hasilChartProdi[i].valueName === "Pembuatan Peralatan dan Perkakas Produksi") {
                                 labelsProdiLulus[i] = "P4";
-                            } else if (hasilChartProdi[i].valueName === "Teknologi                                                                                                                                 Logistik") {
+                            } else if (hasilChartProdi[i].valueName === "Teknologi Rekayasa Logistik") {
                                 labelsProdiLulus[i] = "TRL";
                             } 
                         }
@@ -456,20 +420,21 @@ For more information on enabling MVC for empty projects, visit https://go.micros
         }
 
         function dataAlumniByStatus() {
+            var year = document.getElementById('myYearFilter').value;
             var notVerified = document.getElementById('dataDJP');
             var dataByStatus;
-            var jumlahBelumVerifikasi;
+            var jumlahBelumVerifikasi = 0;
 
             var hostname = "https://localhost:44384/";
             var method = "GET";
-            var url = hostname + "GetAllRegistrasiAlumniByStatus";
+            var url = hostname + "GetAllRegistrasiAlumniByStatus?year=" + year;
             $.ajax({
                 url: url,
                 method: method,
                 contentType: "application/json",
                 success: function (data) {
                     dataByStatus = data.data;
-
+                    
                     for (let i = 0; i < dataByStatus.length; i++) {
                         if (dataByStatus[i].value === "Belum Diverifikasi") {
                             jumlahBelumVerifikasi = dataByStatus[i].count;
@@ -510,28 +475,28 @@ For more information on enabling MVC for empty projects, visit https://go.micros
                     dataBelum.value = sudah;
                     dataBelum.innerText = sudah;
 
+                    var total = sudah + belum;
+
+                    var persentaseSudah = (sudah / total) * 100;
+                    var persentaseBelum = (belum / total) * 100;
 
                     if (newChartIsi) {
-                        dataKuesioner[0] = belum;
-                        dataKuesioner[1] = sudah;
-                        
+                        dataKuesioner = [persentaseBelum, persentaseSudah];
 
                         newChartIsi.data.labels = labelsKuesioner;
                         newChartIsi.data.datasets[0].data = dataKuesioner;
-                        newChartIsi.data.datasets[0].label= 'Jumlah Isi Kuesioner Tahun ' + tahun;
-
+                        newChartIsi.data.datasets[0].label = 'Jumlah Isi Kuesioner Tahun ' + tahun + " (%)";
                         newChartIsi.update();
                     } else {
-                    
-                        dataKuesioner[0] = belum;
-                        dataKuesioner[1] = sudah;
+
+                        dataKuesioner = [persentaseBelum, persentaseSudah];
 
                         newChartIsi = new Chart(ctxxx, {
                             type: 'pie',
                             data: {
                                 labels: labelsKuesioner,
                                 datasets: [{
-                                    label: 'Jumlah Isi Kuesioner Tahun ' + tahun,
+                                    label: 'Jumlah Isi Kuesioner Tahun ' + tahun + " (%)",
                                     data: dataKuesioner,
                                     backgroundColor: [
                                         'rgb(47, 5, 162)',
@@ -593,217 +558,3 @@ For more information on enabling MVC for empty projects, visit https://go.micros
         }
     });
 </script>
-
-<script>
-@*
-        $.ajax({
-            type: "POST",
-            url: "/Pages/Admin/Dashboard.aspx/GetReturnAlumniBerdasarkanTahun",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (result) {
-                hasilChartBar = JSON.parse('' + result.d + '');
-                console.log(hasilChartBar.length);
-
-                for (let i = 0; i < hasilChartBar.length; i++) {
-                    dataTahunLulus[i] = hasilChartBar[i].hitung;
-                    labelsTahunLulus[i] = hasilChartBar[i].tahun_lulus;
-                }
-
-                console.log(dataTahunLulus);
-                console.log(labelsTahunLulus);
-
-                new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: labelsTahunLulus,
-                        datasets: [{
-                            label: 'Data Alumni Berdasarkan Tahun',
-                            data: dataTahunLulus,
-                            borderWidth: 1
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true
-                            }
-                        }
-                    }
-                });
-            }, error: function (data) {
-                console.log(data.responseText);
-            }
-        });
-
-     $.ajax({
-            type: "POST",
-            url: "/Pages/Admin/Dashboard.aspx/GetReturnAlumniBerdasarkanStatus",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (result) {
-                hasilChartDoughnut = JSON.parse('' + result.d + '');
-                console.log(hasilChartDoughnut.length);
-
-                for (let i = 0; i < hasilChartDoughnut.length; i++) {
-                    dataStatus[i] = hasilChartDoughnut[i].hitung;
-                    labelsStatus[i] = hasilChartDoughnut[i].status;
-                }
-
-                console.log(dataStatus);
-                console.log(labelsStatus);
-
-                new Chart(ctxx, {
-                    type: 'doughnut',
-                    data: {
-                        labels: labelsStatus,
-                        datasets: [{
-                            label: 'Jumlah Alumni',
-                            data: dataStatus,
-                            backgroundColor: [
-                                'rgb(255, 99, 132)',
-                                'rgb(54, 162, 235)',
-                                'rgb(255, 205, 86)'
-                            ],
-                            hoverOffset: 4
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        width: 700,
-                    },
-                });
-            }, error: function (data) {
-                console.log(data.responseText);
-            }
-        });
-
-        $.ajax({
-            type: "POST",
-            url: "/Pages/Admin/Dashboard.aspx/GetReturnHasilKuesionerBerdasarkanJenisKuesioner",
-            contentType: "application/json; charset=utf-8",
-            dataType: "json",
-            success: function (result) {
-                hasilChartPie = JSON.parse('' + result.d + '');
-                console.log(hasilChartPie.length);
-
-                for (let i = 0; i < hasilChartPie.length; i++) {
-                    dataKuesioner[i] = hasilChartPie[i].hitung;
-                    labelsKuesioner[i] = hasilChartPie[i].jenis_kuesioner;
-                }
-
-                console.log(dataKuesioner);
-                console.log(labelsKuesioner);
-
-                new Chart(ctxxx, {
-                    type: 'pie',
-                    data: {
-                        labels: labelsKuesioner,
-                        datasets: [{
-                            label: 'Jumlah Kuesioner',
-                            data: dataKuesioner,
-                            backgroundColor: [
-                                'rgb(255, 99, 132)',
-                                'rgb(54, 162, 235)',
-                                'rgb(255, 205, 86)'
-                            ],
-                            hoverOffset: 4
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        width: 700,
-                    },
-                });
-            }, error: function (data) {
-                console.log(data.responseText);
-            }
-        });
-    });
-</script>
-
-<script type="text/javascript">
-    $(".accept").click(function () {
-        var id = $(this).data('id');
-        console.log(id);
-
-        Swal.fire({
-            title: 'Apakah anda yakin terima akun dengan ID ' + id,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#5cb85c',
-            cancelButtonColor: '#d9534f',
-            confirmButtonText: 'Ya Terima!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: '/Pages/Admin/Konfirmasi_Akun_Update.aspx?idTerima=' + id,
-                    method: "POST"
-                });
-
-                Swal.fire({
-                    title: 'Berhasil !',
-                    text: 'Akun dengan ID ' + id + '. Berhasil Diterima.',
-                    type: 'success',
-                    icon: 'success'
-                }).then(okay => {
-                    if (okay) {
-                        window.location.href = "/Pages/Admin/Dashboard.aspx"
-                    }
-                });
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-                Swal.fire({
-                    title: 'Batal !',
-                    text: 'Akun dengan ID ' + id + '. Batal Diterima.',
-                    type: 'error',
-                    icon: 'error'
-                });
-            }
-        });
-        *@
-   
-</script>
-     @* 
-<script type="text/javascript">
-    $(".reject").click(function () {
-        var id = $(this).data('id');
-        console.log(id);
-
-        Swal.fire({
-            title: 'Apakah anda yakin tolak akun dengan ID ' + id,
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#5cb85c',
-            cancelButtonColor: '#d9534f',
-            confirmButtonText: 'Ya Tolak!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: '/Pages/Admin/Konfirmasi_Akun_Update.aspx?idTolak=' + id,
-                    method: "POST"
-                });
-
-                Swal.fire({
-                    title: 'Berhasil !',
-                    text: 'Akun dengan ID ' + id + '. Berhasil Ditolak.',
-                    type: 'success',
-                    icon: 'success'
-                }).then(okay => {
-                    if (okay) {
-                        window.location.href = "/Pages/Admin/Dashboard.aspx"
-                    }
-                });
-            } else if (result.dismiss === Swal.DismissReason.cancel) {
-                Swal.fire({
-                    title: 'Batal !',
-                    text: 'Akun dengan ID ' + id + '. Batal Ditolak.',
-                    type: 'error',
-                    icon: 'error'
-                });
-            }
-        });
-    });
-</script>
- *@

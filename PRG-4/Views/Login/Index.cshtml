@@ -1,8 +1,7 @@
-﻿@{
+﻿@model PRG_4.Models.LoginModel;
+@{
     Layout = null;
 }
-
-
 
 <!DOCTYPE html>
 
@@ -16,21 +15,25 @@
     <link href="assets/Content/jquery.fancybox.css" rel="stylesheet" />
     <link href="assets/Content/bootstrap-select.min.css" rel="stylesheet" />
     <link href="assets/Styles/Style.css" rel="stylesheet" />
-    <script src="/study_tracer/assets/Scripts/tether/tether.min.js"></script>
-    <script src="/study_tracer/assets/Scripts/jquery-3.7.0.min.js"></script>
-    <script src="/study_tracer/assets/Scripts/jquery-ui-1.13.2.min.js"></script>
-    <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-    <script src="/study_tracer/assets/Plugins/bootstrap-4.0.0-alpha.6-dist/js/bootstrap.min.js"></script>
-    <script src="/study_tracer/assets/Plugins/Highcharts-5.0.14/code/highcharts.js"></script>
-    <script src="/study_tracer/assets/Plugins/Highcharts-5.0.14/code/highcharts-more.js"></script>
-    <script src="/study_tracer/assets/Plugins/Highcharts-5.0.14/code/modules/solid-gauge.js"></script>
-    <script src="/study_tracer/assets/Scripts/tinymce/tinymce.min.js"></script>
-    <script src="/study_tracer/assets/Scripts/jquery.fancybox.pack.js"></script>
-    <script src="/study_tracer/assets/Scripts/bootstrap-select.min.js"></script>
-    <script src="/study_tracer/assets/Scripts/LetterAvatar.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 
+    <script src="~/assets/Scripts/tether/tether.min.js"></script>
+    <script src="~/assets/Scripts/jquery-ui-1.12.1.min.js"></script>
+    <script src="~/assets/Plugins/bootstrap-4.0.0-alpha.6-dist/js/bootstrap.min.js"></script>
+    <script src="~/assets/Plugins/Highcharts-5.0.14/code/highcharts.js"></script>
+    <script src="~/assets/Plugins/Highcharts-5.0.14/code/highcharts-more.js"></script>
+    <script src="~/assets/Plugins/Highcharts-5.0.14/code/modules/solid-gauge.js"></script>
+    <script src="~/assets/Scripts/tinymce/tinymce.min.js"></script>
+    <script src="~/assets/Scripts/jquery.fancybox.pack.js"></script>
+    <script src="~/assets/Scripts/bootstrap-select.min.js"></script>
+    <script src="~/assets/Scripts/LetterAvatar.js"></script>
+    <script src="~/assets/Scripts/tableToExcel.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 
     <title>Login - Tracer Study</title>
 
@@ -45,51 +48,8 @@
     </title>
 </head>
 <body style="background-image: url('assets/Images/IMG_Background.jpg'); background-repeat: no-repeat; background-size: cover;">
-    <form method="post" action="./" onsubmit="javascript:return WebForm_OnSubmit();" id="form1" autocomplete="off">
-        <div class="aspNetHidden">
-            <input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="" />
-            <input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="" />
-            <input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="PwkwskTNvy2thWlQe2s59ZfyRDOm58Jxz8gazQb/7PUamh9W32DI2ucZ+AJkIsMCBqVtShvJUrgT0wtbvq2Ijfve997CZmVnnCL00W+SUHg=" />
-        </div>
-
-        <script type="text/javascript">
-            //<![CDATA[
-            var theForm = document.forms['form1'];
-            if (!theForm) {
-                theForm = document.form1;
-            }
-            function __doPostBack(eventTarget, eventArgument) {
-                if (!theForm.onsubmit || (theForm.onsubmit() != false)) {
-                    theForm.__EVENTTARGET.value = eventTarget;
-                    theForm.__EVENTARGUMENT.value = eventArgument;
-                    theForm.submit();
-                }
-            }
-            //]]>
-        </script>
-
-
-        <script src="/study-tracer/WebResource.axd?d=pynGkmcFUV13He1Qd6_TZNdcMNWjTkiL4zYg0M87fMMv6in2MinBRwPoEQk5lRZqrhkfcr8w_mFKhL0KBKWC9Q2&amp;t=637853549273850967" type="text/javascript"></script>
-
-
-        <script src="/study-tracer/WebResource.axd?d=x2nkrMJGXkMELz33nwnakPeoEVJGqNK1rINQXeIG_DdDXh5UHaiaxueDQcOQ-HT9-mHCKCCIfQZk4JUC9AVefJMUNpJ0NT73yNm4HBvRgb81&amp;t=637853549273850967" type="text/javascript"></script>
-        <script type="text/javascript">
-            //<![CDATA[
-            function WebForm_OnSubmit() {
-                if (typeof (ValidatorOnSubmit) == "function" && ValidatorOnSubmit() == false) return false;
-                return true;
-            }
-            //]]>
-        </script>
-
-        <div class="aspNetHidden">
-
-            <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="1B3EB5F8" />
-            <input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="qg/IwGtlRIKMZaWa3XlUrNbZ+3/ns89XCUA7UfPzETOZS1UYG6xD4IBff76bN/E9PLIpUzY6KbD+7SLwKmvZHKLHCDtZufColK5Ik1WGruXcya8/z4UawznHJ7TlGfeJxmczc2XSTDG3URTxAWEKhEGH/baxFTZ1g/aZIYN/ris=" />
-        </div>
-        <div class="aspNetHidden">
-        </div>
-
+    <form method="post" id="loginForm" autocomplete="off">
+        
         <div class="polman-nav-static-top" style="opacity: 0.9;">
             <div class="float-left">
                 <a href="Default.aspx">
@@ -98,30 +58,27 @@
             </div>
         </div>
 
-
         <div class="polman-form-login">
             <h4>Login Tracer Study</h4>
             <hr />
 
             <div class="form-group">
-                <label for="txtUsername">
-                    Email
-                    <span style="color: red;">*</span>
-                    <span id="ContentPlaceHolder1_reqTxtNIM" style="color:Red;display:none;"> Harus Diisi!</span><br />
+                <label for="username">Email<span style="color: red;">*</span>
+                    <span id="usernameNull" style="color:Red;display:none;"> Harus Diisi!</span><br />
                 </label>
-                <input name="ctl00$ContentPlaceHolder1$txtUsername" type="text" id="ContentPlaceHolder1_txtUsername" class="form-control" />
+                @* <input name="txtUsername" type="text" id="ContentPlaceHolder1_txtUsername" class="form-control" /> *@
+                <input id="username" asp-for="username" type="text" class="form-control" />
             </div>
 
             <div class="form-group">
-                <label for="txtPassword">
-                    Kata Sandi
-                    <span style="color: red;">*</span>
-                    <span id="ContentPlaceHolder1_reqTxtPassword" style="color:Red;display:none;"> Harus Diisi!</span><br />
+                <label for="txtPassword">Kata Sandi<span style="color: red;">*</span>
+                    <span id="passwordNull" style="color:Red;display:none;"> Harus Diisi!</span><br />
                 </label>
-                <input name="ctl00$ContentPlaceHolder1$txtPassword" type="password" maxlength="50" id="ContentPlaceHolder1_txtPassword" class="form-control" />
+                @* <input name="txtPassword" type="password" maxlength="50" id="ContentPlaceHolder1_txtPassword" class="form-control" /> *@
+                <input id="password" asp-for="password" type="password" class="form-control" />
             </div>
 
-            <input type="submit" name="ctl00$ContentPlaceHolder1$btnLogin" value="Masuk" onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;ctl00$ContentPlaceHolder1$btnLogin&quot;, &quot;&quot;, true, &quot;valKirim&quot;, &quot;&quot;, false, false))" id="ContentPlaceHolder1_btnLogin" class="btn btn-primary" style="width: 100%; margin-top: 10px; margin-bottom: 10px;" /><br />
+            <input type="submit" name="btnLogin" value="Masuk" id="ContentPlaceHolder1_btnLogin" class="btn btn-primary" style="width: 100%; margin-top: 10px; margin-bottom: 10px;" /><br />
             <span style="margin-top: 20px;">Belum Terdaftar Sebagai Alumni? <a href='/study-tracer/Register.aspx'>Klik disini</a>.</span>
         </div>
 
@@ -135,125 +92,58 @@
                 </footer>
             </div>
         </div>
-
-
-
-
         <script>
-            function error() {
-                Swal.fire(
-                    'Gagal',
-                    'Email atau kata sandi tidak sesuai.',
-                    'error'
-                );
-            }
+            $(document).ready(function () {
+                console.log("Login.........")
+                $('#loginForm').submit(function (e) {
+                    e.preventDefault();
 
-            function berhasilAdmin() {
-                Swal.fire(
-                    'Berhasil',
-                    'Berhasil login, Anda adalah Admin.',
-                    'success'
-                ).then(function () {
-                    window.location = '/study-tracer/Pages/Admin/Dashboard.aspx';
+                    var username = document.getElementById('username').value;
+                    var password = document.getElementById('password').value;
+
+                    if ((username == null || username == "") && (password == null || password == "")) {
+                        $('#usernameNull').show();
+                        $('#passwordNull').show();
+                        return;
+                    } else {
+                        $('#usernameNull').hide();
+                        $('#passwordNull').hide();
+                    }
+                    if (username == null || username == "") {
+                        $('#usernameNull').show();
+                        return;
+                    } else {
+                        $('#usernameNull').hide();
+                    }
+                    if (password == null || password == "") {
+                        $('#passwordNull').show();
+                        return;
+                    } else {
+                        $('#passwordNull').hide();
+                    }
+
+                    $.ajax({
+                        url: '/Login/Login',
+                        method: 'POST',
+                        data: $(this).serialize(),
+                        success: function (data) {
+                            if (data.success) {
+                                // Display success message and redirect
+                                swal("Berhasil!", data.message, "success").then(() => {
+                                    window.location.href = '/Admin/Index';
+                                });
+                            } else {
+                                // Display error message
+                                swal("Gagal!", data.message, "error")
+                            }
+                        },
+                        error: function (data) {
+                            // Handle AJAX error if any
+                            swal("Gagal!", "Error", "error");
+                        }
+                    });
                 });
-            }   
-
-            function berhasilAlumni() {
-                Swal.fire(
-                    'Berhasil',
-                    'Berhasil login, Anda adalah Alumni.',
-                    'success'
-                ).then(function () {
-                    window.location = '/study-tracer/Pages/Alumni/Dashboard.aspx';
-                });
-            }
-
-            function berhasilDaftar() {
-                Swal.fire(
-                    'Berhasil',
-                    'Akun berhasil didaftarkan, silahkan buka email Anda untuk verifikasi akun Tracer Study.',
-                    'success'
-                ).then(function () {
-                    window.location = '/study-tracer';
-                });
-            }
-
-            function berhasilVerifikasiEmail() {
-                Swal.fire(
-                    'Berhasil',
-                    'Email berhasil diverifikasi, silahkan login untuk mengakses Tracer Study.',
-                    'success'
-                ).then(function () {
-                    window.location = '/study-tracer';
-                });
-            }
-
-            function belumDiverifikasi() {
-                Swal.fire(
-                    'Peringatan',
-                    'Akun Anda belum diverifikasi.',
-                    'warning'
-                );
-            }
-
-            function ditolak() {
-                Swal.fire(
-                    'Gagal',
-                    'Akun Anda telah ditolak, tidak bisa login.',
-                    'error'
-                );
-            }
-
-            function dataRAsama() {
-                Swal.fire(
-                    'Gagal',
-                    'Email Anda sudah pernah didaftarkan sebelumnya.',
-                    'error'
-                );
-            }
-        </script>
-
-        <script type="text/javascript">
-            //<![CDATA[
-            var Page_Validators = new Array(document.getElementById("ContentPlaceHolder1_reqTxtNIM"), document.getElementById("ContentPlaceHolder1_reqTxtPassword"));
-            //]]>
-        </script>
-
-        <script type="text/javascript">
-            //<![CDATA[
-            var ContentPlaceHolder1_reqTxtNIM = document.all ? document.all["ContentPlaceHolder1_reqTxtNIM"] : document.getElementById("ContentPlaceHolder1_reqTxtNIM");
-            ContentPlaceHolder1_reqTxtNIM.controltovalidate = "ContentPlaceHolder1_txtUsername";
-            ContentPlaceHolder1_reqTxtNIM.display = "Dynamic";
-            ContentPlaceHolder1_reqTxtNIM.validationGroup = "valKirim";
-            ContentPlaceHolder1_reqTxtNIM.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
-            ContentPlaceHolder1_reqTxtNIM.initialvalue = "";
-            var ContentPlaceHolder1_reqTxtPassword = document.all ? document.all["ContentPlaceHolder1_reqTxtPassword"] : document.getElementById("ContentPlaceHolder1_reqTxtPassword");
-            ContentPlaceHolder1_reqTxtPassword.controltovalidate = "ContentPlaceHolder1_txtPassword";
-            ContentPlaceHolder1_reqTxtPassword.display = "Dynamic";
-            ContentPlaceHolder1_reqTxtPassword.validationGroup = "valkirim";
-            ContentPlaceHolder1_reqTxtPassword.evaluationfunction = "RequiredFieldValidatorEvaluateIsValid";
-            ContentPlaceHolder1_reqTxtPassword.initialvalue = "";
-            //]]>
-        </script>
-
-
-        <script type="text/javascript">
-            //<![CDATA[
-
-            var Page_ValidationActive = false;
-            if (typeof (ValidatorOnLoad) == "function") {
-                ValidatorOnLoad();s
-            }
-
-            function ValidatorOnSubmit() {
-                if (Page_ValidationActive) {
-                    return ValidatorCommonOnSubmit();
-                }
-                else {
-                    return true;
-                }
-            }
-                    //]]>
+            });
         </script>
     </form>
 </body>

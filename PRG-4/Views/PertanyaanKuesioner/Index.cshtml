@@ -10,12 +10,13 @@
     <table id="dataTable" style="width: 100%;" class="table table-hover table-bordered table-condensed text-center">
         <thead>
             <tr>
-                <th class="align-middle text-center" width="1%">ID</th>
-                <th class="align-middle text-center" width="1%">Urutan</th>
-                <th class="align-middle text-center">Deskripsi Pertanyaan</th>
-                <th class="align-middle text-center">Kode Pertanyaan</th>
-                <th class="align-middle text-center">Periode - Jenis Kuesioner</th>
-                <th class="align-middle text-center" width="1%">Aksi</th>
+                <th class="align-middle text-center" width="1%">No.</th>
+                <th class="align-middle text-center" width="5%">ID Pertanyaan</th>
+                <th class="align-middle text-center" width="5%">Urutan</th>
+                <th class="align-middle text-center" width="50%">Deskripsi Pertanyaan</th>
+                <th class="align-middle text-center" width="20%">Kode Pertanyaan</th>
+                <th class="align-middle text-center" width="10%">Periode - Jenis Kuesioner</th>
+                <th class="align-middle text-center" width="9%">Aksi</th>
             </tr>
         </thead>
         <tbody>
@@ -26,6 +27,7 @@
 @section scripts {
     <script type="text/javascript">
         $(document).ready(function () {
+            var no = 1;
             $('#dataTable').DataTable({
                 "language": {
                     "emptyTable": "Tidak ada Data Pertanyaan Kuesioner",
@@ -46,69 +48,42 @@
                     }
                 },
                 "columns": [
+                    { 
+                        "data": "id_pku",
+                        "render": function (data) {
+                            return no++;
+                        }
+                    },
                     { "data": "id_pku" },
                     { "data": "no_urutan" },
                     { "data": "deskripsiPertanyaan" },
                     { "data": "kode" },
                     { "data": "id_detailPeriode" },
                     {
-                        "data": "nim",
-                        "render": function () {
-                            return '<a href="/DetailPertanyaanKuesioner/Index" rel="tooltip" data-placement="left" title="Lihat Detail Pertanyaan Kuesioner"><i class="fa fa-list" aria-hidden="true"></i></a>';
+                        "data": "id_pku",
+                        "render": function (data, type, row) {
+                            var jenis = row.jenis; // Asumsikan ada kolom 'jenis' dalam data dari server
+                            return '<a href="#" class="detail-button" data-id="' + data + '" data-jenis="' + jenis + '" rel="tooltip" data-placement="left" title="Lihat Detail Pertanyaan Kuesioner"><i class="fa fa-list" aria-hidden="true"></i></a>';
                         }
                     }
                 ],
-                "buttons": [
-                    {
-                        text: '<i class="fa fa-plus"></i> Tambah',
-                        className: 'btn btn-primary',
-                        action: function (e, dt, node, config) {
-                            window.location.href = '@Url.Action("Tambah", "Pertanyaan_Kuesioner")';
-                        },
-                        init: function (api, node, config) {
-                            $(node).removeClass('dt-button');
-                        },
-                    },
-                ]
+                "buttons": []
             });
-
-        });
-
-        $(".remove").click(function () {
-            var id = $(this).data('id');
-            console.log(id);
-            Swal.fire({
-                title: 'Apakah anda ingin menghapus Pertanyaan kuesioner dengan ID ' + id,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#5cb85c',
-                cancelButtonColor: '#d9534f',
-                confirmButtonText: 'Ya Hapus!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: '@Url.Action("Hapus", "Pertanyaan_Kuesioner")?id=' + id,
-                        method: "POST"
-                    });
-                    Swal.fire({
-                        title: 'Berhasil !',
-                        text: 'Pertanyaan Kuesioner dengan ID ' + id + '. Berhasil Dihapus.',
-                        type: 'success',
-                        icon: 'success'
-                    }).then(okay => {
-                        if (okay) {
-                            window.location.href = '@Url.Action("Index", "Pertanyaan_Kuesioner")'
-                        }
-                    }); 
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    Swal.fire({
-                        title: 'Batal !',
-                        text: 'Pertanyaan Kuesioner dengan ID ' + id + '. Batal Dihapus.',
-                        type: 'error',
-                        icon: 'error'
-                    });
-                }
+            $(document).on('click', '.detail-button', function () {
+                var id = $(this).data('id');
+                var jenis = $(this).data('jenis');
+                lihatGrafik(id, jenis);
             });
         });
+
+    </script>
+    <script>
+        function lihatGrafik(id, jenis) {
+            if (jenis == "Radio Button") {
+                window.location.replace('/DetailPertanyaanKuesioner/Index?id_pku=' + id + '&jenis=1');
+            } else {
+                window.location.replace('/DetailPertanyaanKuesioner/Index?id_pku=' + id + '&jenis=2');
+            }
+        }
     </script>
 }
