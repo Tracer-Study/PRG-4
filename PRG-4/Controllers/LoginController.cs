@@ -22,6 +22,12 @@ namespace PRG_4.Controllers
         {
             return View();
         }
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            
+            return RedirectToAction("Index", "Login");
+        }
 
         [HttpPost]
         public async Task<IActionResult> Login(LoginModel loginModel)

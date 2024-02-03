@@ -1,11 +1,93 @@
 @{
     ViewBag.Title = "Pertanyaan Kuesioner";
 }
-
+@* 
 <div>
-    <h2 class="text-center">Daftar Pertanyaan Kuesioner</h2>
-</div>
+    <h2 class="text-center">Hasil Pertanyaan Kuesioner</h2>
+</div> *@
 
+<div class="row">
+    <div class="card w-100" style="border-radius: 10px;">
+        <div class="card-header">
+            Dashboard - 
+        </div>
+        <div class="card-body mb-4 mx-3 p-3">
+            <div class="row mb-4">
+                <div class="col-md-2 col-sm-12">
+                    <div class="row">
+                        <div class="col">
+                            <select class="form-control" id="jenisPeriodeFilter" style="border-radius: 10px;">
+                                <option value="">-- Pilih Jenis Periode Kuesioner --</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 col-sm-12">
+                    <div class="row">
+                        <div class="col">
+                            <select class="form-control" id="jenisFilter" style="border-radius: 10px;">
+                                <option value="">-- Pilih Jenis Pertanyaan Kuesioner --</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-8 col-sm-12">
+                    <div class="row">
+                        <div class="col">
+                            <select class="form-control" id="myYearFilter" style="border-radius: 10px;">
+                                <option value="">-- Pilih Pertanyaan Kuesioner --</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mb-4">
+                <div style="overflow-x: auto; width: 100%;">
+                    <table id="dataTable" style="width: 100%;" class="table table-hover table-bordered table-condensed text-center">
+                        <thead>
+                            <tr>
+                                <th class="align-middle text-center" width="1%">No.</th>
+                                <th class="align-middle text-center" width="5%">ID Pertanyaan</th>
+                                <th class="align-middle text-center" width="50%">Deskripsi Pertanyaan</th>
+                                <th class="align-middle text-center" width="20%">Kode</th>
+                                <th class="align-middle text-center" width="20%">Jawaban Kuesioner</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+
+                    <div id="grafikHasil" class="row w-100 p-3">
+                        <div class="col-md-12 mb-4 justify-content-center">
+                            <div class="card card-stats mb-4 p-3" style="border-radius: 10px;">
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col">
+                                            <center>
+                                                @* <span style="font-size: Larger; font-weight: bold;">Data Alumni Berdasarkan Tahun</span><br> *@
+                                                <br>
+                                            </center>
+                                        </div>
+                                    </div>
+
+                                    <canvas id="myKuesionerChartBar" style="display: block; box-sizing: border-box; height: 394px; width: 100%;"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <a asp-controller="PertanyaanKuesioner" asp-action="Index" id="btnCancelDetail" class="btn btn-secondary">Kembali</a>
+
+                </div>
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+@* 
 <div style="overflow-x: auto; width: 100%;">
     <table id="dataTable" style="width: 100%;" class="table table-hover table-bordered table-condensed text-center">
         <thead>
@@ -23,8 +105,210 @@
         </tbody>
     </table>
 </div>
+ *@
+
 
 @section scripts {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            hostname = "https://localhost:44384/";
+            
+            $.ajax({
+                url: hostname + "GetJenisKuesioner",
+                method: "GET",
+                contentType: "application/json",
+                success: function (data) {
+                    list = data.data;
+
+                    list.forEach(function (item) {
+                        var newJenis = "<option value='" + item.count + "'>" + item.value + "</option>";
+
+                        $('#jenisPeriodeFilter').append(newJenis);
+                    });
+                },
+                error: function (data) {
+                    console.log(data.message);
+                }
+            });
+
+            $.ajax({
+                url: hostname + "GetJenisPernyataan",
+                method: "GET",
+                contentType: "application/json",
+                success: function (data) {
+                    list = data.data;
+
+                    list.forEach(function (item) {
+                        var newJenis = "<option value='" + item.value + "'>" + item.value + "</option>";
+
+                        $('#jenisFilter').append(newJenis);
+                    });
+                },
+                error: function (data) {
+                    console.log(data.message);
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var jenis = @ViewBag.Jenis;
+            var idPertanyaan = '@ViewBag.IdPku';
+
+            console.log(idPertanyaan, jenis);
+
+            var dataJawaban = [];
+            var deskripsiJawaban = [];
+            var idJawaban = [];
+            var jumlahJawaban = {
+                nilai: [],
+                jumlah: []
+            };
+
+            if (jenis == 1) {
+                $('#dataTable').hide();
+                getJawabanKuesioner(idPertanyaan);
+                dataDetailJawabanKuesioner(idPertanyaan);
+
+                var ctx = document.getElementById('myKuesionerChartBar').getContext('2d');
+                var newChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: deskripsiJawaban,
+                        datasets: [{
+                            label: 'Data Alumni Berdasarkan Prodi Tahun ',
+                            data: jumlahJawaban.jumlah,
+                            borderWidth: 1,
+                            backgroundColor: 'rgb(47, 5, 162)',
+                            borderColor: 'rgb(255, 255, 255)',
+                            borderRadius: 10
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                suggestedMin: 30,
+                                suggestedMax: 100,
+                                ticks: {
+                                    stepSize: 20
+                                }
+                            },
+                            x: {
+                                beginAtZero: true
+                            }
+                        }
+                    }
+                });
+                $('#grafikHasil').show();
+
+            } else {
+                $('#grafikHasil').hide();
+                getJawabanTable(idPertanyaan);
+                $('#dataTable').show();
+
+            }
+
+            function dataDetailJawabanKuesioner(id) {
+                var hostname = "https://localhost:44384/";
+                var method = "GET";
+                var url = hostname + "GetHasilPertanyaanKuesioner?id_pku=" + id;
+                $.ajax({
+                    url: url,
+                    method: method,
+                    contentType: "application/json",
+                    success: function (data) {
+                        list = data.data;
+
+                        for (let j = 0; j < dataJawaban.length; j++) {
+                            jumlahJawaban.nilai[j] = dataJawaban[j];
+                            jumlahJawaban.jumlah[j] = 0;
+                            var i = 0;
+                            list.forEach(function (item) {
+                                if (dataJawaban[j] == item.jawabanKuesioner) {
+                                    jumlahJawaban.jumlah[j] = item.jumlahKoresponden;
+                                }
+                                i++;
+                            });
+
+                        }
+                    },
+                    error: function (data) {
+                        console.log(data.responseText);
+                    }
+                });
+            }
+
+            function getJawabanKuesioner(id) {
+                var hostname = "https://localhost:44384/";
+                var method = "GET";
+                var url = hostname + "GetJawabanKuesionerByPertanyaan?id_pku=" + id;
+                $.ajax({
+                    url: url,
+                    method: method,
+                    contentType: "application/json",
+                    success: function (data) {
+                        list = data.data;
+                        var i = 0;
+                        list.forEach(function (item) {
+                            dataJawaban[i] = item.nilaiJawaban;
+                            deskripsiJawaban[i] = item.deskripsiJawaban;
+                            idJawaban[i] = item.id_jawabanKuesioner;
+                            i++;
+                        });
+                    },
+                    error: function (data) {
+                        console.log(data.responseText);
+                    }
+                });
+            }
+
+            function getJawabanTable(id) {
+                var no = 1;
+                $('#dataTable').DataTable({
+                    "language": {
+                        "emptyTable": "Tidak ada Data Hasil Kuesioner",
+                        "zeroRecords": "Tidak ada Data Hasil Kuesioner"
+                    },
+                    "dom": 'Bfrti<"bottom-wrapper"p>',
+                    scrollX: true,
+                    "bLengthChange": false,
+                    "bInfo": false,
+                    "pageLength": 10,
+                    "ajax": {
+                        "url": 'https://localhost:44384/GetHasilPertanyaanKuesionerTable?id_pku=' + id,
+                        "type": "GET",
+                        "datatype": "json",
+                        "error": function (xhr, error, thrown) {
+                            console.log("Error fetching data from server:", error);
+                            console.log("Server response:", xhr.responseText);
+                        }
+                    },
+                    "columns": [
+                        {
+                            "data": "id_pku",
+                            "render": function (data) {
+                                return no++;
+                            }
+                        },
+                        { "data": "id_pku" },
+                        { "data": "deskripsiPertanyaan" },
+                        { "data": "kode" },
+                        { "data": "jawabanKuesioner" }
+                    ],
+                    "buttons": []
+                });
+                $(document).on('click', '.detail-button', function () {
+                    var id = $(this).data('id');
+                    var jenis = $(this).data('jenis');
+                    lihatGrafik(id, jenis);
+                });
+            }
+        });
+    </script>
+}
+
+ @* @section scripts {
     <script type="text/javascript">
         $(document).ready(function () {
             var no = 1;
@@ -48,7 +332,7 @@
                     }
                 },
                 "columns": [
-                    { 
+                    {
                         "data": "id_pku",
                         "render": function (data) {
                             return no++;
@@ -58,12 +342,12 @@
                     { "data": "no_urutan" },
                     { "data": "deskripsiPertanyaan" },
                     { "data": "kode" },
-                    { "data": "id_detailPeriode" },
+                    { "data": "jenisPeriode" },
                     {
                         "data": "id_pku",
                         "render": function (data, type, row) {
                             var jenis = row.jenis; // Asumsikan ada kolom 'jenis' dalam data dari server
-                            return '<a href="#" class="detail-button" data-id="' + data + '" data-jenis="' + jenis + '" rel="tooltip" data-placement="left" title="Lihat Detail Pertanyaan Kuesioner"><i class="fa fa-list" aria-hidden="true"></i></a>';
+                            return '<a href="#" class="detail-button" data-id="' + data + '" data-jenis="' + jenis + '" rel="tooltip" data-placement="left" title="Lihat Detail Pertanyaan Kuesioner"><i class="fa fa-eye" aria-hidden="true"></i></a>';
                         }
                     }
                 ],
@@ -87,3 +371,4 @@
         }
     </script>
 }
+ *@

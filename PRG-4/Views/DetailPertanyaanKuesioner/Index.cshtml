@@ -12,11 +12,9 @@
             <tr>
                 <th class="align-middle text-center" width="1%">No.</th>
                 <th class="align-middle text-center" width="5%">ID Pertanyaan</th>
-                <th class="align-middle text-center" width="5%">Urutan</th>
                 <th class="align-middle text-center" width="50%">Deskripsi Pertanyaan</th>
-                <th class="align-middle text-center" width="20%">Kode Pertanyaan</th>
-                <th class="align-middle text-center" width="10%">Periode - Jenis Kuesioner</th>
-                <th class="align-middle text-center" width="9%">Aksi</th>
+                <th class="align-middle text-center" width="20%">Kode</th>
+                <th class="align-middle text-center" width="20%">Jawaban Kuesioner</th>
             </tr>
         </thead>
         <tbody>
@@ -66,30 +64,8 @@
 
             if (jenis == 1) {
                 $('#dataTable').hide();
-                $('#grafikHasil').show();
                 getJawabanKuesioner(idPertanyaan);
                 dataDetailJawabanKuesioner(idPertanyaan);
-
-                console.log(idJawaban);
-                console.log(deskripsiJawaban);
-                console.log(dataJawaban);
-                console.log(jumlahJawaban);
-
-                var chartData = {
-                    labels: deskripsiJawaban,
-                    datasets: [{
-                        label: 'Jawaban Kuesioner',
-                        data: jumlahJawaban.jumlah,
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
-                    }]
-                };
-
-                var chartOptions = {
-                    responsive: false,
-                    maintainAspectRatio: false
-                };
 
                 var ctx = document.getElementById('myKuesionerChartBar').getContext('2d');
                 var newChart = new Chart(ctx, {
@@ -121,10 +97,13 @@
                         }
                     }
                 });
+                $('#grafikHasil').show();
 
             } else {
-                $('#dataTable').show();
                 $('#grafikHasil').hide();
+                getJawabanTable(idPertanyaan);
+                $('#dataTable').show();
+
             }
 
             function dataDetailJawabanKuesioner(id) {
@@ -178,6 +157,48 @@
                     error: function (data) {
                         console.log(data.responseText);
                     }
+                });
+            }
+
+            function getJawabanTable(id) {
+                var no = 1;
+                $('#dataTable').DataTable({
+                    "language": {
+                        "emptyTable": "Tidak ada Data Hasil Kuesioner",
+                        "zeroRecords": "Tidak ada Data Hasil Kuesioner"
+                    },
+                    "dom": 'Bfrti<"bottom-wrapper"p>',
+                    scrollX: true,
+                    "bLengthChange": false,
+                    "bInfo": false,
+                    "pageLength": 10,
+                    "ajax": {
+                        "url": 'https://localhost:44384/GetHasilPertanyaanKuesionerTable?id_pku=' + id,
+                        "type": "GET",
+                        "datatype": "json",
+                        "error": function (xhr, error, thrown) {
+                            console.log("Error fetching data from server:", error);
+                            console.log("Server response:", xhr.responseText);
+                        }
+                    },
+                    "columns": [
+                        {
+                            "data": "id_pku",
+                            "render": function (data) {
+                                return no++;
+                            }
+                        },
+                        { "data": "id_pku" },
+                        { "data": "deskripsiPertanyaan" },
+                        { "data": "kode" },
+                        { "data": "jawabanKuesioner" }
+                    ],
+                    "buttons": []
+                });
+                $(document).on('click', '.detail-button', function () {
+                    var id = $(this).data('id');
+                    var jenis = $(this).data('jenis');
+                    lihatGrafik(id, jenis);
                 });
             }
         });
