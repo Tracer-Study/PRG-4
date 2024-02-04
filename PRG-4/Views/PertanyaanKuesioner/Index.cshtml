@@ -1,19 +1,14 @@
 @{
     ViewBag.Title = "Pertanyaan Kuesioner";
 }
-@* 
-<div>
-    <h2 class="text-center">Hasil Pertanyaan Kuesioner</h2>
-</div> *@
+
 
 <div class="row">
-    <div class="card w-100" style="border-radius: 10px;">
-        <div class="card-header">
-            Dashboard - 
-        </div>
+    <div class="card w-100 pt-3" style="border-radius: 10px;">
+        <h2 class="text-center">Hasil Kuesioner</h2>
         <div class="card-body mb-4 mx-3 p-3">
             <div class="row mb-4">
-                <div class="col-md-2 col-sm-12">
+                <div class="col-md-2 col-sm-12 mb-3">
                     <div class="row">
                         <div class="col">
                             <select class="form-control" id="jenisPeriodeFilter" style="border-radius: 10px;">
@@ -22,7 +17,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-2 col-sm-12">
+                <div class="col-md-2 col-sm-12 mb-3">
                     <div class="row">
                         <div class="col">
                             <select class="form-control" id="jenisFilter" style="border-radius: 10px;">
@@ -31,12 +26,197 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-8 col-sm-12">
+                <div class="col-md-8 col-sm-12 mb-3">
                     <div class="row">
                         <div class="col">
-                            <select class="form-control" id="myYearFilter" style="border-radius: 10px;">
+                            <select class="form-control" id="pertanyaanFilter" style="border-radius: 10px;">
                                 <option value="">-- Pilih Pertanyaan Kuesioner --</option>
                             </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="grafik-awal">
+                <div class="row mb-4">
+                    <div style="overflow-x: auto; width: 100%;">
+                        <div id="grafik-Hasil-1" class="row w-100 p-3">
+                            <div class="col-md-12 mb-4 justify-content-center">
+                                <div class="card card-stats mb-4 p-3" style="border-radius: 10px;">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <center>
+                                                    <span id="teks-pertanyaan-1" style="font-size: Larger; font-weight: bold;">Data Alumni Berdasarkan Tahun</span><br>
+                                                    <br>
+                                                </center>
+                                            </div>
+                                        </div>
+
+                                        <canvas id="grafik-awal-1" style="display: block; box-sizing: border-box; height: 394px; width: 100%;"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="row mb-4">
+                    <div style="overflow-x: auto; width: 100%;">
+                        <div id="grafik-Hasil-2" class="row w-100 p-3">
+                            <div class="col-md-12 mb-4 justify-content-center">
+                                <div class="card card-stats mb-4 p-3" style="border-radius: 10px;">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <center>
+                                                    <span id="teks-pertanyaan-2" style="font-size: Larger; font-weight: bold;">Data Alumni Berdasarkan Tahun</span><br>
+                                                    <br>
+                                                </center>
+                                            </div>
+                                        </div>
+
+                                        <canvas id="grafik-awal-2" style="display: block; box-sizing: border-box; height: 394px; width: 100%;"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="row mb-4">
+                    <div style="overflow-x: auto; width: 100%;">
+                        <div id="grafik-Hasil-3" class="row w-100 p-3">
+                            <div class="col-md-12 mb-4 justify-content-center">
+                                <div class="card card-stats mb-4 p-3" style="border-radius: 10px;">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <center>
+                                                    <span id="teks-pertanyaan-3" style="font-size: Larger; font-weight: bold;">Data Alumni Berdasarkan Tahun</span><br>
+                                                    <br>
+                                                </center>
+                                            </div>
+                                        </div>
+
+                                        <canvas id="grafik-awal-3" style="display: block; box-sizing: border-box; height: 394px; width: 100%;"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="row mb-4">
+                    <div style="overflow-x: auto; width: 100%;">
+                        <div id="grafik-Hasil-4" class="row w-100 p-3">
+                            <div class="col-md-12 mb-4 justify-content-center">
+                                <div class="card card-stats mb-4 p-3" style="border-radius: 10px;">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <center>
+                                                    <span id="teks-pertanyaan-4" style="font-size: Larger; font-weight: bold;">Data Alumni Berdasarkan Tahun</span><br>
+                                                    <br>
+                                                </center>
+                                            </div>
+                                        </div>
+
+                                        <canvas id="grafik-awal-4" style="display: block; box-sizing: border-box; height: 394px; width: 100%;"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="row mb-4">
+                    <div style="overflow-x: auto; width: 100%;">
+                        <div id="grafik-Hasil-5" class="row w-100 p-3">
+                            <div class="col-md-12 mb-4 justify-content-center">
+                                <div class="card card-stats mb-4 p-3" style="border-radius: 10px;">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <center>
+                                                    <span id="teks-pertanyaan-5" style="font-size: Larger; font-weight: bold;">Data Alumni Berdasarkan Tahun</span><br>
+                                                    <br>
+                                                </center>
+                                            </div>
+                                        </div>
+
+                                        <canvas id="grafik-awal-5" style="display: block; box-sizing: border-box; height: 394px; width: 100%;"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="row mb-4">
+                    <div style="overflow-x: auto; width: 100%;">
+                        <div id="grafik-Hasil-6" class="row w-100 p-3">
+                            <div class="col-md-12 mb-4 justify-content-center">
+                                <div class="card card-stats mb-4 p-3" style="border-radius: 10px;">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <center>
+                                                    <span id="teks-pertanyaan-6" style="font-size: Larger; font-weight: bold;">Data Alumni Berdasarkan Tahun</span><br>
+                                                    <br>
+                                                </center>
+                                            </div>
+                                        </div>
+
+                                        <canvas id="grafik-awal-6" style="display: block; box-sizing: border-box; height: 394px; width: 100%;"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="row mb-4">
+                    <div style="overflow-x: auto; width: 100%;">
+                        <div id="grafik-Hasil-7" class="row w-100 p-3">
+                            <div class="col-md-12 mb-4 justify-content-center">
+                                <div class="card card-stats mb-4 p-3" style="border-radius: 10px;">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <center>
+                                                    <span id="teks-pertanyaan-7" style="font-size: Larger; font-weight: bold;">Data Alumni Berdasarkan Tahun</span><br>
+                                                    <br>
+                                                </center>
+                                            </div>
+                                        </div>
+
+                                        <canvas id="grafik-awal-7" style="display: block; box-sizing: border-box; height: 394px; width: 100%;"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            
+                <div class="row mb-4">
+                    <div style="overflow-x: auto; width: 100%;">
+                        <div id="grafik-Hasil-8" class="row w-100 p-3">
+                            <div class="col-md-12 mb-4 justify-content-center">
+                                <div class="card card-stats mb-4 p-3" style="border-radius: 10px;">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col">
+                                                <center>
+                                                    <span id="teks-pertanyaan-8" style="font-size: Larger; font-weight: bold;">Data Alumni Berdasarkan Tahun</span><br>
+                                                    <br>
+                                                </center>
+                                            </div>
+                                        </div>
+
+                                        <canvas id="grafik-awal-8" style="display: block; box-sizing: border-box; height: 394px; width: 100%;"></canvas>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -44,19 +224,20 @@
 
             <div class="row mb-4">
                 <div style="overflow-x: auto; width: 100%;">
-                    <table id="dataTable" style="width: 100%;" class="table table-hover table-bordered table-condensed text-center">
-                        <thead>
-                            <tr>
-                                <th class="align-middle text-center" width="1%">No.</th>
-                                <th class="align-middle text-center" width="5%">ID Pertanyaan</th>
-                                <th class="align-middle text-center" width="50%">Deskripsi Pertanyaan</th>
-                                <th class="align-middle text-center" width="20%">Kode</th>
-                                <th class="align-middle text-center" width="20%">Jawaban Kuesioner</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
+                    <div id="tablePertanyaan">
+                        <table id="dataTable" style="width: 100%;" class="table table-hover table-bordered table-condensed text-center">
+                            <thead>
+                                <tr>
+                                    <th class="align-middle text-center" width="1%">No.</th>
+                                    <th class="align-middle text-center" width="5%">ID Pertanyaan</th>
+                                    <th class="align-middle text-center" width="50%">Deskripsi Pertanyaan</th>
+                                    <th class="align-middle text-center" width="20%">Kode</th>
+                                    <th class="align-middle text-center" width="20%">Jawaban Kuesioner</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tbody"></tbody>
+                        </table>
+                    </div>
 
                     <div id="grafikHasil" class="row w-100 p-3">
                         <div class="col-md-12 mb-4 justify-content-center">
@@ -76,41 +257,163 @@
                             </div>
                         </div>
                     </div>
-
-                    <a asp-controller="PertanyaanKuesioner" asp-action="Index" id="btnCancelDetail" class="btn btn-secondary">Kembali</a>
-
                 </div>
-
-
-
             </div>
         </div>
     </div>
 </div>
-@* 
-<div style="overflow-x: auto; width: 100%;">
-    <table id="dataTable" style="width: 100%;" class="table table-hover table-bordered table-condensed text-center">
-        <thead>
-            <tr>
-                <th class="align-middle text-center" width="1%">No.</th>
-                <th class="align-middle text-center" width="5%">ID Pertanyaan</th>
-                <th class="align-middle text-center" width="5%">Urutan</th>
-                <th class="align-middle text-center" width="50%">Deskripsi Pertanyaan</th>
-                <th class="align-middle text-center" width="20%">Kode Pertanyaan</th>
-                <th class="align-middle text-center" width="10%">Periode - Jenis Kuesioner</th>
-                <th class="align-middle text-center" width="9%">Aksi</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-</div>
- *@
-
 
 @section scripts {
     <script type="text/javascript">
+        function loadGrafikAwal(idPertanyaan, grafik, deskQuest) {
+            var hostname = "https://localhost:44384/";
+
+            $.ajax({
+                url: hostname + "GetPertanyaanKuesioner?id_pku=" + idPertanyaan,
+                method: "GET",
+                contentType: "application/json",
+                success: function (data) {
+                    var question = data.data;
+
+                    deskQuest.innerText = question.deskripsiPertanyaan;
+
+                    var dataJawabanGrafik = [];
+                    var deskripsiJawabanGrafik = [];
+                    var idJawabanGrafik = [];
+                    var jumlahJawabanGrafik = {
+                        nilai: [],
+                        jumlah: []
+                    };
+                    
+                    
+                    getJawabanGrafik(idPertanyaan, grafik, dataJawabanGrafik, deskripsiJawabanGrafik, idJawabanGrafik, jumlahJawabanGrafik);
+
+                },
+                error: function (data) {
+                    console.log(data.message);
+                }
+            });
+        }
+
+        function getJawabanGrafik(idPertanyaan, grafik, dataJawabanGrafik, deskripsiJawabanGrafik, idJawabanGrafik, jumlahJawabanGrafik) {
+            var hostname = "https://localhost:44384/";
+            var method = "GET";
+            var url = hostname + "GetJawabanKuesionerByPertanyaan?id_pku=" + idPertanyaan;
+            $.ajax({
+                url: url,
+                method: method,
+                contentType: "application/json",
+                success: function (data) {
+                    list = data.data;
+                    var i = 0;
+                    list.forEach(function (item) {
+                        dataJawabanGrafik[i] = item.nilaiJawaban;
+                        deskripsiJawabanGrafik[i] = item.deskripsiJawaban;
+                        idJawabanGrafik[i] = item.id_jawabanKuesioner;
+                        i++;
+                    });
+
+                    dataDetailJawabanGrafik(idPertanyaan, grafik, dataJawabanGrafik, deskripsiJawabanGrafik, idJawabanGrafik, jumlahJawabanGrafik);
+                },
+                error: function (data) {
+                    console.log(data.message);
+                }
+            });
+        }
+        function dataDetailJawabanGrafik(idPertanyaan, ctxGrfk, dataJawabanGrafik, deskripsiJawabanGrafik, idJawabanGrafik, jumlahJawabanGrafik) {
+            var hostname = "https://localhost:44384/";
+            var method = "GET";
+            var url = hostname + "GetHasilPertanyaanKuesioner?id_pku=" + idPertanyaan;
+            $.ajax({
+                url: url,
+                method: method,
+                contentType: "application/json",
+                success: function (data) {
+                    list = data.data;
+                    var newChartGrafik;
+
+                    for (let j = 0; j < dataJawabanGrafik.length; j++) {
+                        jumlahJawabanGrafik.nilai[j] = dataJawabanGrafik[j];
+                        jumlahJawabanGrafik.jumlah[j] = 0;
+                        var i = 0;
+                        list.forEach(function (item) {
+                            if (dataJawabanGrafik[j] == item.jawabanKuesioner) {
+                                jumlahJawabanGrafik.jumlah[j] = item.jumlahKoresponden;
+                            }
+                            i++;
+                        });
+                    }
+
+                    if (newChartGrafik) {
+                        newChartGrafik.data.labels = deskripsiJawabanGrafik;
+                        newChartGrafik.data.datasets[0].data = jumlahJawabanGrafik.jumlah;
+                        newChartGrafik.data.datasets[0].label = 'Jawaban Pertanyaan';
+
+                        newChartGrafik.data.datasets.forEach(function (dataset, index) {
+                            dataset.backgroundColor = 'rgb(47, 5, 162)';
+                            dataset.borderColor = 'rgb(255, 255, 255)';
+                            dataset.borderWidth = 1;
+                            dataset.borderRadius = 10;
+                        });
+
+                        newChartGrafik.update();
+                    } else {
+                        newChartGrafik = new Chart(ctxGrfk, {
+                            type: 'bar',
+                            data: {
+                                labels: deskripsiJawabanGrafik,
+                                datasets: [{
+                                    label: 'Data Alumni Berdasarkan Prodi Tahun ',
+                                    data: jumlahJawabanGrafik.jumlah,
+                                    borderWidth: 1,
+                                    backgroundColor: 'rgb(47, 5, 162)',
+                                    borderColor: 'rgb(255, 255, 255)',
+                                    borderRadius: 10
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    y: {
+                                        beginAtZero: true,
+                                        suggestedMin: 30,
+                                        suggestedMax: 100,
+                                        ticks: {
+                                            stepSize: 20
+                                        }
+                                    },
+                                    x: {
+                                        beginAtZero: true
+                                    }
+                                }
+                            }
+                        });
+                    }
+                },
+                error: function (data) {
+                    console.log(data.responseText);
+                }
+            });
+        }
+
+    </script>
+    <script type="text/javascript">
+        var dataTable;
+
         $(document).ready(function () {
+            var idPertanyaanArray = ["PKU001", "PKU002", "PKU007", "PKU015", "PKU016", "PKU017", "PKU039", "PKU044"];
+            var i = 1;
+
+            idPertanyaanArray.forEach(function (item) {
+                var grafik = document.getElementById('grafik-awal-' + i).getContext('2d');
+                var deskQuestion = document.getElementById('teks-pertanyaan-' + i);
+
+                loadGrafikAwal(item, grafik, deskQuestion);
+                i++;
+            });
+
+            $('#grafikHasil').hide();
+            $('#tablePertanyaan').hide();
+
             hostname = "https://localhost:44384/";
             
             $.ajax({
@@ -132,7 +435,7 @@
             });
 
             $.ajax({
-                url: hostname + "GetJenisPernyataan",
+                url: hostname + "GetJenisPertanyaan",
                 method: "GET",
                 contentType: "application/json",
                 success: function (data) {
@@ -148,182 +451,308 @@
                     console.log(data.message);
                 }
             });
+
+
+            $.ajax({
+                url: hostname + "GetAllPertanyaanKuesioner",
+                method: "GET",
+                contentType: "application/json",
+                success: function (data) {
+                    list = data.data;
+
+                    list.forEach(function (item) {
+                        var deskripsiPertanyaan = "<option value='" + item.id_pku + "'>" + item.deskripsiPertanyaan + "</option>";
+
+                        $('#pertanyaanFilter').append(deskripsiPertanyaan);
+                    });
+                },
+                error: function (data) {
+                    console.log(data.message);
+                }
+            });
+
+            document.getElementById('jenisPeriodeFilter').addEventListener('change', jenisPeriodeFilterChange);
+            document.getElementById('jenisFilter').addEventListener('change', jenisFilterChange);
+            document.getElementById('pertanyaanFilter').addEventListener('change', pertanyaanFilterChange);
+
+            function jenisPeriodeFilterChange() {
+                var idPeriode = $(this).val();
+                var jenis = $('#jenisFilter').val();
+
+                if (idPeriode == "" && jenis == "") {
+                    return;
+                } else if (idPeriode != "" && jenis == "") {
+                    getPertanyaanByPeriode(idPeriode);
+                } else if (idPeriode == "" && jenis != "") {
+                    getPertanyaanByJenis(jenis);
+                } else {
+                    getPertanyaanByPeriodeAndJenis(idPeriode, jenis);
+                }
+            }
+
+            function jenisFilterChange() {
+                var jenis = $(this).val();
+                var idPeriode = $('#jenisPeriodeFilter').val();
+
+                if (idPeriode == "" && jenis == "") {
+                    return;
+                } else if (idPeriode != "" && jenis == "") {
+                    getPertanyaanByPeriode(idPeriode);
+                } else if (idPeriode == "" && jenis != "") {
+                    getPertanyaanByJenis(jenis);
+                } else {
+                    getPertanyaanByPeriodeAndJenis(idPeriode, jenis);
+                }
+            }
+            function pertanyaanFilterChange() {
+                var pertanyaan = $(this).val();
+                
+                if (pertanyaan == "") {
+                    return;
+                } else {
+                    getHasilPertanyaan(pertanyaan)
+                }
+            }
         });
     </script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            var jenis = @ViewBag.Jenis;
-            var idPertanyaan = '@ViewBag.IdPku';
+    <script>
+        var ctx = document.getElementById('myKuesionerChartBar').getContext('2d');
+        var dataJawaban = [];
+        var deskripsiJawaban = [];
+        var idJawaban = [];
+        var jumlahJawaban = {
+            nilai: [],
+            jumlah: []
+        };
+        var newChart;
 
-            console.log(idPertanyaan, jenis);
+        function getPertanyaanByPeriode(idPeriode) {
+            $.ajax({
+                url: hostname + "GetAllPertanyaanKuesioner",
+                method: "GET",
+                contentType: "application/json",
+                success: function (data) {
+                    list = data.data;
+                    $('#pertanyaanFilter').empty();
+                    $('#pertanyaanFilter').append('<option value="" >-- Pilih Pertanyaan Kuesioner --</option>');
+                    list.forEach(function (item) {
+                        if (item.id_detailPeriode == idPeriode) {
+                            var deskripsiPertanyaan = "<option value='" + item.id_pku + "'>" + item.deskripsiPertanyaan + "</option>";
 
-            var dataJawaban = [];
-            var deskripsiJawaban = [];
-            var idJawaban = [];
-            var jumlahJawaban = {
-                nilai: [],
-                jumlah: []
-            };
-
-            if (jenis == 1) {
-                $('#dataTable').hide();
-                getJawabanKuesioner(idPertanyaan);
-                dataDetailJawabanKuesioner(idPertanyaan);
-
-                var ctx = document.getElementById('myKuesionerChartBar').getContext('2d');
-                var newChart = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: deskripsiJawaban,
-                        datasets: [{
-                            label: 'Data Alumni Berdasarkan Prodi Tahun ',
-                            data: jumlahJawaban.jumlah,
-                            borderWidth: 1,
-                            backgroundColor: 'rgb(47, 5, 162)',
-                            borderColor: 'rgb(255, 255, 255)',
-                            borderRadius: 10
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                suggestedMin: 30,
-                                suggestedMax: 100,
-                                ticks: {
-                                    stepSize: 20
-                                }
-                            },
-                            x: {
-                                beginAtZero: true
-                            }
+                            $('#pertanyaanFilter').append(deskripsiPertanyaan);
                         }
-                    }
-                });
-                $('#grafikHasil').show();
+                    });
+                },
+                error: function (data) {
+                    console.log(data.message);
+                }
+            });
+        }
+        function getPertanyaanByJenis(jenis) {
+            $.ajax({
+                url: hostname + "GetAllPertanyaanKuesioner",
+                method: "GET",
+                contentType: "application/json",
+                success: function (data) {
+                    list = data.data;
+                    $('#pertanyaanFilter').empty();
+                    $('#pertanyaanFilter').append('<option value="" >-- Pilih Pertanyaan Kuesioner --</option>');
+                    list.forEach(function (item) {
+                        if (item.jenis == jenis) {
+                            var deskripsiPertanyaan = "<option value='" + item.id_pku + "'>" + item.deskripsiPertanyaan + "</option>";
 
-            } else {
-                $('#grafikHasil').hide();
-                getJawabanTable(idPertanyaan);
-                $('#dataTable').show();
-
-            }
-
-            function dataDetailJawabanKuesioner(id) {
-                var hostname = "https://localhost:44384/";
-                var method = "GET";
-                var url = hostname + "GetHasilPertanyaanKuesioner?id_pku=" + id;
-                $.ajax({
-                    url: url,
-                    method: method,
-                    contentType: "application/json",
-                    success: function (data) {
-                        list = data.data;
-
-                        for (let j = 0; j < dataJawaban.length; j++) {
-                            jumlahJawaban.nilai[j] = dataJawaban[j];
-                            jumlahJawaban.jumlah[j] = 0;
-                            var i = 0;
-                            list.forEach(function (item) {
-                                if (dataJawaban[j] == item.jawabanKuesioner) {
-                                    jumlahJawaban.jumlah[j] = item.jumlahKoresponden;
-                                }
-                                i++;
-                            });
-
+                            $('#pertanyaanFilter').append(deskripsiPertanyaan);
                         }
-                    },
-                    error: function (data) {
-                        console.log(data.responseText);
-                    }
-                });
-            }
+                    });
+                },
+                error: function (data) {
+                    console.log(data.message);
+                }
+            });
+        }
 
-            function getJawabanKuesioner(id) {
-                var hostname = "https://localhost:44384/";
-                var method = "GET";
-                var url = hostname + "GetJawabanKuesionerByPertanyaan?id_pku=" + id;
-                $.ajax({
-                    url: url,
-                    method: method,
-                    contentType: "application/json",
-                    success: function (data) {
-                        list = data.data;
+        function getPertanyaanByPeriodeAndJenis(idPeriode, jenis) {
+            $.ajax({
+                url: hostname + "GetAllPertanyaanKuesioner",
+                method: "GET",
+                contentType: "application/json",
+                success: function (data) {
+                    list = data.data;
+                    $('#pertanyaanFilter').empty();
+                    $('#pertanyaanFilter').append('<option value="" >-- Pilih Pertanyaan Kuesioner --</option>');
+                    list.forEach(function (item) {
+                        if ((item.id_detailPeriode == idPeriode) && (item.jenis == jenis)) {
+                            var deskripsiPertanyaan = "<option value='" + item.id_pku + "'>" + item.deskripsiPertanyaan + "</option>";
+                            console.log(item.id_pku + " -- " + item.deskripsiPertanyaan);
+                            $('#pertanyaanFilter').append(deskripsiPertanyaan);
+                        }
+                    });
+                },
+                error: function (data) {
+                    console.log(data.message);
+                }
+            });
+        }
+
+        function getHasilPertanyaan(idPertanyaan) {
+            var jenis = "";
+
+            $.ajax({
+                url: hostname + "GetPertanyaanKuesioner?id_pku=" + idPertanyaan,
+                method: "GET",
+                contentType: "application/json",
+                success: function (data) {
+                    var pertanyaan = data.data;
+                    jenis = pertanyaan.jenis;
+
+                    dataJawaban = [];
+                    deskripsiJawaban = [];
+                    idJawaban = [];
+                    jumlahJawaban.nilai = [];
+                    jumlahJawaban.jumlah = [];
+
+                    $('#grafik-awal').hide();
+
+                    if (jenis == "Radio Button") {
+                        $('#tablePertanyaan').hide();
+
+                        getJawabanKuesioner(idPertanyaan);
+                        dataDetailJawabanKuesioner(idPertanyaan);
+
+                        $('#grafikHasil').show();
+
+                    } else {
+                        $('#grafikHasil').hide();
+
+                        getJawabanTable(idPertanyaan);
+                        $('#tablePertanyaan').show();
+                    }
+                },
+                error: function (data) {
+                    console.log(data.message);
+                }
+            });
+        }
+
+        function dataDetailJawabanKuesioner(id) {
+            var hostname = "https://localhost:44384/";
+            var method = "GET";
+            var url = hostname + "GetHasilPertanyaanKuesioner?id_pku=" + id;
+            $.ajax({
+                url: url,
+                method: method,
+                contentType: "application/json",
+                success: function (data) {
+                    list = data.data;
+
+                    for (let j = 0; j < dataJawaban.length; j++) {
+                        jumlahJawaban.nilai[j] = dataJawaban[j];
+                        jumlahJawaban.jumlah[j] = 0;
                         var i = 0;
                         list.forEach(function (item) {
-                            dataJawaban[i] = item.nilaiJawaban;
-                            deskripsiJawaban[i] = item.deskripsiJawaban;
-                            idJawaban[i] = item.id_jawabanKuesioner;
+                            if (dataJawaban[j] == item.jawabanKuesioner) {
+                                jumlahJawaban.jumlah[j] = item.jumlahKoresponden;
+                            }
                             i++;
                         });
-                    },
-                    error: function (data) {
-                        console.log(data.responseText);
                     }
-                });
-            }
 
-            function getJawabanTable(id) {
-                var no = 1;
-                $('#dataTable').DataTable({
-                    "language": {
-                        "emptyTable": "Tidak ada Data Hasil Kuesioner",
-                        "zeroRecords": "Tidak ada Data Hasil Kuesioner"
-                    },
-                    "dom": 'Bfrti<"bottom-wrapper"p>',
-                    scrollX: true,
-                    "bLengthChange": false,
-                    "bInfo": false,
-                    "pageLength": 10,
-                    "ajax": {
-                        "url": 'https://localhost:44384/GetHasilPertanyaanKuesionerTable?id_pku=' + id,
-                        "type": "GET",
-                        "datatype": "json",
-                        "error": function (xhr, error, thrown) {
-                            console.log("Error fetching data from server:", error);
-                            console.log("Server response:", xhr.responseText);
-                        }
-                    },
-                    "columns": [
-                        {
-                            "data": "id_pku",
-                            "render": function (data) {
-                                return no++;
+                    if (newChart) {
+                        newChart.data.labels = deskripsiJawaban;
+                        newChart.data.datasets[0].data = jumlahJawaban.jumlah;
+                        newChart.data.datasets[0].label = 'Data Alumni Berdasarkan Prodi Tahun ';
+
+                        newChart.data.datasets.forEach(function (dataset, index) {
+                            dataset.backgroundColor = 'rgb(47, 5, 162)';
+                            dataset.borderColor = 'rgb(255, 255, 255)';
+                            dataset.borderWidth = 1;
+                            dataset.borderRadius = 10;
+                        });
+
+                        newChart.update();
+                    } else {
+                        newChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: deskripsiJawaban,
+                                datasets: [{
+                                    label: 'Data Alumni Berdasarkan Prodi Tahun ',
+                                    data: jumlahJawaban.jumlah,
+                                    borderWidth: 1,
+                                    backgroundColor: 'rgb(47, 5, 162)',
+                                    borderColor: 'rgb(255, 255, 255)',
+                                    borderRadius: 10
+                                }]
+                            },
+                            options: {
+                                scales: {
+                                    y: {
+                                        beginAtZero: true,
+                                        suggestedMin: 30,
+                                        suggestedMax: 100,
+                                        ticks: {
+                                            stepSize: 20
+                                        }
+                                    },
+                                    x: {
+                                        beginAtZero: true
+                                    }
+                                }
                             }
-                        },
-                        { "data": "id_pku" },
-                        { "data": "deskripsiPertanyaan" },
-                        { "data": "kode" },
-                        { "data": "jawabanKuesioner" }
-                    ],
-                    "buttons": []
-                });
-                $(document).on('click', '.detail-button', function () {
-                    var id = $(this).data('id');
-                    var jenis = $(this).data('jenis');
-                    lihatGrafik(id, jenis);
-                });
-            }
-        });
-    </script>
-}
+                        });
+                    }
+                },
+                error: function (data) {
+                    console.log(data.responseText);
+                }
+            });
+        }
 
- @* @section scripts {
-    <script type="text/javascript">
-        $(document).ready(function () {
+        function getJawabanKuesioner(id) {
+            var hostname = "https://localhost:44384/";
+            var method = "GET";
+            var url = hostname + "GetJawabanKuesionerByPertanyaan?id_pku=" + id;
+            $.ajax({
+                url: url,
+                method: method,
+                contentType: "application/json",
+                success: function (data) {
+                    list = data.data;
+                    var i = 0;
+                    list.forEach(function (item) {
+                        dataJawaban[i] = item.nilaiJawaban;
+                        deskripsiJawaban[i] = item.deskripsiJawaban;
+                        idJawaban[i] = item.id_jawabanKuesioner;
+                        i++;
+                    });
+                },
+                error: function (data) {
+                    console.log(data.message);
+                }
+            });
+        }
+
+        function getJawabanTable(id) {
+            if (dataTable) {
+                $('#tbody').empty();
+            }
+
             var no = 1;
             $('#dataTable').DataTable({
                 "language": {
-                    "emptyTable": "Tidak ada Data Pertanyaan Kuesioner",
-                    "zeroRecords": "Tidak ada Data Pertanyaan Kuesioner"
+                    "emptyTable": "Tidak ada Data Hasil Kuesioner",
+                    "zeroRecords": "Tidak ada Data Hasil Kuesioner"
                 },
                 "dom": 'Bfrti<"bottom-wrapper"p>',
                 scrollX: true,
                 "bLengthChange": false,
                 "bInfo": false,
+                stateSave: true,
+                "bDestroy": true,
                 "pageLength": 10,
+                "buttons": [],
                 "ajax": {
-                    "url": 'https://localhost:44384/GetAllPertanyaanKuesioner',
+                    "url": 'https://localhost:44384/GetHasilPertanyaanKuesionerTable?id_pku=' + id,
                     "type": "GET",
                     "datatype": "json",
                     "error": function (xhr, error, thrown) {
@@ -336,39 +765,16 @@
                         "data": "id_pku",
                         "render": function (data) {
                             return no++;
-                        }
+                        },
+                        "title": "No."
                     },
-                    { "data": "id_pku" },
-                    { "data": "no_urutan" },
-                    { "data": "deskripsiPertanyaan" },
-                    { "data": "kode" },
-                    { "data": "jenisPeriode" },
-                    {
-                        "data": "id_pku",
-                        "render": function (data, type, row) {
-                            var jenis = row.jenis; // Asumsikan ada kolom 'jenis' dalam data dari server
-                            return '<a href="#" class="detail-button" data-id="' + data + '" data-jenis="' + jenis + '" rel="tooltip" data-placement="left" title="Lihat Detail Pertanyaan Kuesioner"><i class="fa fa-eye" aria-hidden="true"></i></a>';
-                        }
-                    }
-                ],
-                "buttons": []
+                    { "data": "id_pku", "title": "ID Pertanyaan" },
+                    { "data": "deskripsiPertanyaan", "title": "Deskripsi Pertanyaan" },
+                    { "data": "kode", "title": "Kode" },
+                    { "data": "jawabanKuesioner", "title": "Jawaban Kuesioner" } 
+                ]
             });
-            $(document).on('click', '.detail-button', function () {
-                var id = $(this).data('id');
-                var jenis = $(this).data('jenis');
-                lihatGrafik(id, jenis);
-            });
-        });
+        }
 
     </script>
-    <script>
-        function lihatGrafik(id, jenis) {
-            if (jenis == "Radio Button") {
-                window.location.replace('/DetailPertanyaanKuesioner/Index?id_pku=' + id + '&jenis=1');
-            } else {
-                window.location.replace('/DetailPertanyaanKuesioner/Index?id_pku=' + id + '&jenis=2');
-            }
-        }
-    </script>
 }
- *@

@@ -249,6 +249,7 @@ For more information on enabling MVC for empty projects, visit https://go.micros
                             dataTahunLulus[i] = slicedData[i].count;
                             labelsTahunLulus[i] = slicedData[i].value;
                         }
+
                         newChartYear.data.labels = labelsTahunLulus;
                         newChartYear.data.datasets[0].data = dataTahunLulus;
                         newChartYear.data.datasets[0].label= 'Data Alumni Berdasarkan Tahun';
@@ -299,7 +300,7 @@ For more information on enabling MVC for empty projects, visit https://go.micros
                     }
                 },
                 error: function (data) {
-                    console.log(data.responseText);
+                    console.log(data.message);
                 }
             });
         }
