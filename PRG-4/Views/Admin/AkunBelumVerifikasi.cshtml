@@ -46,6 +46,7 @@
                     "url": 'https://localhost:44384/GetDataAkunBelumVerifikasi?year=' + '@ViewBag.Tahun',
                     "type": "GET",
                     "datatype": "json",
+                    "headers": { 'Authorization': 'Bearer ' + '@ViewBag.JwtToken' },
                     "error": function (xhr, error, thrown) {
                         console.log("Error fetching data from server:", error);
                         console.log("Server response:", xhr.responseText);
@@ -84,6 +85,7 @@
                 url: url,
                 method: method,
                 contentType: "application/json",
+                headers: { 'Authorization' : 'Bearer ' + '@ViewBag.JwtToken' },
                 success: function (data) {
                     swal("Berhasil!", data.message, "success").then(() => {
                         window.location.reload();
@@ -103,6 +105,7 @@
             $.ajax({
                 url: url,
                 method: method,
+                headers: { 'Authorization' : 'Bearer ' + '@ViewBag.JwtToken' },
                 contentType: "application/json",
                 success: function (data) {
                     swal("Berhasil!", data.message, "success").then(() => {

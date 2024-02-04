@@ -114,6 +114,7 @@
                     url: url,
                     method: method,
                     contentType: "application/json",
+                    headers: { 'Authorization': ' Bearer ' + '@ViewBag.JwtToken' },
                     success: function (data) {
                         list = data.data;
 
@@ -144,6 +145,7 @@
                     url: url,
                     method: method,
                     contentType: "application/json",
+                    headers: { 'Authorization': ' Bearer ' + '@ViewBag.JwtToken' },
                     success: function (data) {
                         list = data.data;
                         var i = 0;
@@ -176,6 +178,7 @@
                         "url": 'https://localhost:44384/GetHasilPertanyaanKuesionerTable?id_pku=' + id,
                         "type": "GET",
                         "datatype": "json",
+                        "headers" : { 'Authorization': ' Bearer ' + '@ViewBag.JwtToken' },
                         "error": function (xhr, error, thrown) {
                             console.log("Error fetching data from server:", error);
                             console.log("Server response:", xhr.responseText);

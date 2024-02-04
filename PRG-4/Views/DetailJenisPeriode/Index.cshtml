@@ -91,43 +91,5 @@
             });
         });
 
-        $(".remove").click(function () {
-            var id = $(this).data('id');
-            console.log(id);
-
-            Swal.fire({
-                title: 'Apakah anda yakin menghapus Detail Jenis Periode dengan ID ' + id,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#5cb85c',
-                cancelButtonColor: '#d9534f',
-                confirmButtonText: 'Ya Hapus!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: '@Url.Action("Hapus", "DetailJenisPeriode")' + '?id=' + id,
-                        method: "POST"
-                    });
-
-                    Swal.fire({
-                        title: 'Berhasil !',
-                        text: 'Detail Jenis Periode dengan ID ' + id + '. Berhasil Dihapus.',
-                        type: 'success',
-                        icon: 'success'
-                    }).then(okay => {
-                        if (okay) {
-                            window.location.href = '@Url.Action("Index", "DetailJenisPeriode")'
-                        }
-                    });
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    Swal.fire({
-                        title: 'Batal !',
-                        text: 'Detail Jenis Periode dengan ID ' + id + '. Batal Dihapus.',
-                        type: 'error',
-                        icon: 'error'
-                    });
-                }
-            });
-        });
     </script>
 }

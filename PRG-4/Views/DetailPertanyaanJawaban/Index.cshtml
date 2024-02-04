@@ -19,44 +19,7 @@
             </tr>
         </thead>
         <tbody>
-            @* @if (Model.Any())
-            {
-                int i = 0;
-                foreach (var item in Model)
-                {
-                    i++;
-                    <tr style="height: 45px;">
-                        <td>@i</td>
-                        <td>@item.DeskripsiJawaban</td>
-                        <td>@item.DeskripsiPertanyaan</td>
-                        <td>@item.Keterangan</td>
-                        <td>
-                            @if (item.Keterangan != "Sudah ada Hasil Kuesioner")
-                            {
-                                <a href='@Url.Action("Edit", "DetailPertanyaanJawaban", new { id = item.Id })' rel="tooltip" data-placement="left"
-                                   title="Ubah Detail Pertanyaan Turunan">
-                                    <i class="fa fa-edit" aria-hidden="true"></i>
-                                </a> &nbsp;
-                                <a href="javascript:void(0)" class="remove" data-id="@item.Id" rel="tooltip" data-placement="left"
-                                   title="Hapus Detail Pertanyaan Turunan">
-                                    <i class="fa fa-trash" aria-hidden="true"></i>
-                                </a>
-                            }
-                            else
-                            {
-                                <i class="fa fa-edit" aria-hidden="true"></i> &nbsp;
-                                <i class="fa fa-trash" aria-hidden="true"></i>
-                            }
-                        </td>
-                    </tr>
-                }
-            }
-            else
-            {
-                <tr>
-                    <td colspan="5" class="text-center">Tidak ada data Detail Pertanyaan Turunan</td>
-                </tr>
-            } *@
+            
         </tbody>
     </table>
 </div>
@@ -89,52 +52,5 @@
             });
         });
 
-        $(".remove").click(function () {
-            var id = $(this).data('id');
-
-            Swal.fire({
-                title: 'Apakah anda yakin menghapus Detail Pertanyaan Jawaban dengan ID ' + id,
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#5cb85c',
-                cancelButtonColor: '#d9534f',
-                confirmButtonText: 'Ya Hapus!'
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    $.ajax({
-                        url: '@Url.Action("Hapus", "DetailPertanyaanJawaban")',
-                        method: "POST",
-                        data: { id: id },
-                        success: function () {
-                            Swal.fire({
-                                title: 'Berhasil !',
-                                text: 'Detail Pertanyaan Jawaban dengan ID ' + id + '. Berhasil Dihapus.',
-                                type: 'success',
-                                icon: 'success'
-                            }).then(okay => {
-                                if (okay) {
-                                    window.location.href = '@Url.Action("Index", "DetailPertanyaanJawaban")';
-                                }
-                            });
-                        },
-                        error: function () {
-                            Swal.fire({
-                                title: 'Error !',
-                                text: 'Gagal menghapus Detail Pertanyaan Jawaban dengan ID ' + id + '.',
-                                type: 'error',
-                                icon: 'error'
-                            });
-                        }
-                    });
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    Swal.fire({
-                        title: 'Batal !',
-                        text: 'Detail Pertanyaan Jawaban dengan ID ' + id + '. Batal Dihapus.',
-                        type: 'error',
-                        icon: 'error'
-                    });
-                }
-            });
-        });
     </script>
 }

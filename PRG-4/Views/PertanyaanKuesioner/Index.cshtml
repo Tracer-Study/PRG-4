@@ -272,6 +272,7 @@
                 url: hostname + "GetPertanyaanKuesioner?id_pku=" + idPertanyaan,
                 method: "GET",
                 contentType: "application/json",
+                headers: { 'Authorization': ' Bearer ' + '@ViewBag.JwtToken' },
                 success: function (data) {
                     var question = data.data;
 
@@ -303,6 +304,7 @@
                 url: url,
                 method: method,
                 contentType: "application/json",
+                headers: { 'Authorization': ' Bearer ' + '@ViewBag.JwtToken' },
                 success: function (data) {
                     list = data.data;
                     var i = 0;
@@ -328,6 +330,7 @@
                 url: url,
                 method: method,
                 contentType: "application/json",
+                headers: { 'Authorization': ' Bearer ' + '@ViewBag.JwtToken' },
                 success: function (data) {
                     list = data.data;
                     var newChartGrafik;
@@ -420,6 +423,7 @@
                 url: hostname + "GetJenisKuesioner",
                 method: "GET",
                 contentType: "application/json",
+                headers: { 'Authorization': ' Bearer ' + '@ViewBag.JwtToken' },
                 success: function (data) {
                     list = data.data;
 
@@ -438,6 +442,7 @@
                 url: hostname + "GetJenisPertanyaan",
                 method: "GET",
                 contentType: "application/json",
+                headers: { 'Authorization': ' Bearer ' + '@ViewBag.JwtToken' },
                 success: function (data) {
                     list = data.data;
 
@@ -457,6 +462,7 @@
                 url: hostname + "GetAllPertanyaanKuesioner",
                 method: "GET",
                 contentType: "application/json",
+                headers: { 'Authorization': ' Bearer ' + '@ViewBag.JwtToken' },
                 success: function (data) {
                     list = data.data;
 
@@ -531,6 +537,7 @@
                 url: hostname + "GetAllPertanyaanKuesioner",
                 method: "GET",
                 contentType: "application/json",
+                headers: { 'Authorization': ' Bearer ' + '@ViewBag.JwtToken' },
                 success: function (data) {
                     list = data.data;
                     $('#pertanyaanFilter').empty();
@@ -553,6 +560,7 @@
                 url: hostname + "GetAllPertanyaanKuesioner",
                 method: "GET",
                 contentType: "application/json",
+                headers: { 'Authorization': ' Bearer ' + '@ViewBag.JwtToken' },
                 success: function (data) {
                     list = data.data;
                     $('#pertanyaanFilter').empty();
@@ -576,6 +584,7 @@
                 url: hostname + "GetAllPertanyaanKuesioner",
                 method: "GET",
                 contentType: "application/json",
+                headers: { 'Authorization': ' Bearer ' + '@ViewBag.JwtToken' },
                 success: function (data) {
                     list = data.data;
                     $('#pertanyaanFilter').empty();
@@ -601,6 +610,7 @@
                 url: hostname + "GetPertanyaanKuesioner?id_pku=" + idPertanyaan,
                 method: "GET",
                 contentType: "application/json",
+                headers: { 'Authorization': ' Bearer ' + '@ViewBag.JwtToken' },
                 success: function (data) {
                     var pertanyaan = data.data;
                     jenis = pertanyaan.jenis;
@@ -642,6 +652,7 @@
                 url: url,
                 method: method,
                 contentType: "application/json",
+                headers: { 'Authorization': ' Bearer ' + '@ViewBag.JwtToken' },
                 success: function (data) {
                     list = data.data;
 
@@ -716,6 +727,7 @@
                 url: url,
                 method: method,
                 contentType: "application/json",
+                headers: { 'Authorization': ' Bearer ' + '@ViewBag.JwtToken' },
                 success: function (data) {
                     list = data.data;
                     var i = 0;
@@ -755,6 +767,7 @@
                     "url": 'https://localhost:44384/GetHasilPertanyaanKuesionerTable?id_pku=' + id,
                     "type": "GET",
                     "datatype": "json",
+                    "headers": { 'Authorization': ' Bearer ' + '@ViewBag.JwtToken' },
                     "error": function (xhr, error, thrown) {
                         console.log("Error fetching data from server:", error);
                         console.log("Server response:", xhr.responseText);
